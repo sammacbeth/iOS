@@ -19,6 +19,7 @@
 
 import Foundation
 
+/*
 public struct AppVersion {
 
     struct Keys {
@@ -64,3 +65,4 @@ public struct AppVersion {
         return "\(name) \(versionAndBuildNumber)"
     }
 }
+*/

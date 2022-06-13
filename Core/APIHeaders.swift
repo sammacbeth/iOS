@@ -18,6 +18,7 @@
 //
 
 import Foundation
+import BrowserServicesKit
 
 public typealias HTTPHeaders = [String: String]
 
@@ -33,7 +34,7 @@ public class APIHeaders {
 
     private let appVersion: AppVersion
 
-    public init(appVersion: AppVersion = AppVersion.shared) {
+    public init(appVersion: AppVersion = AppVersion()) {
         self.appVersion = appVersion
     }
 

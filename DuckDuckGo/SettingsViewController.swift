@@ -62,7 +62,7 @@ class SettingsViewController: UITableViewController {
 
     private lazy var emailManager = EmailManager()
     
-    private lazy var versionProvider: AppVersion = AppVersion.shared
+    private lazy var versionProvider = AppVersion()
     fileprivate lazy var privacyStore = PrivacyUserDefaults()
     fileprivate lazy var appSettings = AppDependencyProvider.shared.appSettings
     fileprivate lazy var variantManager = AppDependencyProvider.shared.variantManager

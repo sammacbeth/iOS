@@ -22,6 +22,7 @@ import LinkPresentation
 import Core
 import Kingfisher
 import WebKit
+import BrowserServicesKit
 
 class RootDebugViewController: UITableViewController {
 
@@ -105,7 +106,7 @@ class DiagnosticReportDataSource: UIActivityItemProvider {
         """
         # DuckDuckGo App Diagnostic Report
         Date: \(String(describing: Date()))
-        Version: \(AppVersion.shared.versionAndBuildNumber)
+        Version: \(AppVersion().versionAndBuildNumber)
         """
     }
 

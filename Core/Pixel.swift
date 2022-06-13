@@ -18,6 +18,7 @@
 //
 
 import Foundation
+import BrowserServicesKit
 import os.log
 
 // swiftlint:disable file_length
@@ -350,7 +351,7 @@ public class Pixel {
         
         var newParams = params
         if includedParameters.contains(.appVersion) {
-            newParams[PixelParameters.appVersion] = AppVersion.shared.versionAndBuildNumber
+            newParams[PixelParameters.appVersion] = AppVersion().versionAndBuildNumber
         }
         if isDebugBuild {
             newParams[PixelParameters.test] = PixelValues.test

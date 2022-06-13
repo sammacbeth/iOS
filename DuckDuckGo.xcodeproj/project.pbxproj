@@ -526,7 +526,6 @@
 		F1134EB51F40AEEA00B73467 /* StatisticsLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1134EB41F40AEEA00B73467 /* StatisticsLoader.swift */; };
 		F1134EBC1F40D45700B73467 /* MockStatisticsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1134EBA1F40D3D000B73467 /* MockStatisticsStore.swift */; };
 		F1134EC41F40E25800B73467 /* AppVersionExtensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1134EC21F40E24600B73467 /* AppVersionExtensionTests.swift */; };
-		F1134EC61F40E3B400B73467 /* AppVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1134EC51F40E3B400B73467 /* AppVersion.swift */; };
 		F1134ECE1F40EA9C00B73467 /* AtbParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1134ECC1F40EA2000B73467 /* AtbParserTests.swift */; };
 		F1134ED21F40EF3A00B73467 /* JsonTestDataLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1134ECF1F40EBE200B73467 /* JsonTestDataLoader.swift */; };
 		F1134ED61F40F29F00B73467 /* StatisticsUserDefaultsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1134ED41F40F15800B73467 /* StatisticsUserDefaultsTests.swift */; };
@@ -1014,6 +1013,7 @@
 		85A9C37820E0E00C00073340 /* HomeRow.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = HomeRow.xcassets; sourceTree = "<group>"; };
 		85AE668D2097206E0014CF04 /* NotificationView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NotificationView.xib; sourceTree = "<group>"; };
 		85AE668F209724120014CF04 /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
+		85B52B952857B7190089AEB4 /* BrowserServicesKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = BrowserServicesKit; path = ../BrowserServicesKit; sourceTree = "<group>"; };
 		85B718F41FD071E50031A14F /* HTTPSUpgrade.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = HTTPSUpgrade.xcdatamodel; sourceTree = "<group>"; };
 		85B9CB8821AEBDD5009001F1 /* FavoriteHomeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteHomeCell.swift; sourceTree = "<group>"; };
 		85BA58541F34F49E00C6E8CA /* AppUserDefaults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppUserDefaults.swift; sourceTree = "<group>"; };
@@ -1900,7 +1900,6 @@
 		F1134EB41F40AEEA00B73467 /* StatisticsLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatisticsLoader.swift; sourceTree = "<group>"; };
 		F1134EBA1F40D3D000B73467 /* MockStatisticsStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockStatisticsStore.swift; sourceTree = "<group>"; };
 		F1134EC21F40E24600B73467 /* AppVersionExtensionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppVersionExtensionTests.swift; sourceTree = "<group>"; };
-		F1134EC51F40E3B400B73467 /* AppVersion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppVersion.swift; sourceTree = "<group>"; };
 		F1134ECC1F40EA2000B73467 /* AtbParserTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AtbParserTests.swift; sourceTree = "<group>"; };
 		F1134ECF1F40EBE200B73467 /* JsonTestDataLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JsonTestDataLoader.swift; sourceTree = "<group>"; };
 		F1134ED41F40F15800B73467 /* StatisticsUserDefaultsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatisticsUserDefaultsTests.swift; sourceTree = "<group>"; };
@@ -2465,6 +2464,7 @@
 		84E341891E2F7EFB00BDBA6F = {
 			isa = PBXGroup;
 			children = (
+				85B52B952857B7190089AEB4 /* BrowserServicesKit */,
 				6FB030C7234331B400A10DB9 /* Configuration.xcconfig */,
 				84E341941E2F7EFB00BDBA6F /* DuckDuckGo */,
 				F143C2E51E4A4CD400CFDE3A /* Core */,
@@ -3480,7 +3480,6 @@
 			isa = PBXGroup;
 			children = (
 				F143C3151E4A99D200CFDE3A /* AppUrls.swift */,
-				F1134EC51F40E3B400B73467 /* AppVersion.swift */,
 				F17D723B1E8BB374003E8B0E /* AppDeepLinks.swift */,
 				F143C3161E4A99D200CFDE3A /* Link.swift */,
 				855D914E206563A000C4B448 /* TLD.swift */,
@@ -5230,7 +5229,6 @@
 				1E4DCF4C27B6A4CB00961E25 /* URLFileExtension.swift in Sources */,
 				85F45B2A1F875DFF00DB1978 /* ContentBlockerRequest.swift in Sources */,
 				F1D477CB1F2149C40031ED49 /* Type.swift in Sources */,
-				F1134EC61F40E3B400B73467 /* AppVersion.swift in Sources */,
 				1CB7B82123CEA1F800AA24EA /* DateExtension.swift in Sources */,
 				988F3DCF237D5C0F00AEE34C /* SchemeHandler.swift in Sources */,
 				9875E00722316B8400B1373F /* Instruments.swift in Sources */,

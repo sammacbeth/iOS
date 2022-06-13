@@ -18,6 +18,7 @@
 //
 
 import Foundation
+import BrowserServicesKit
 import Core
 import os.log
 
@@ -47,7 +48,7 @@ struct FeedbackSubmitter: FeedbackSender {
     private let statisticsStore: StatisticsStore
     private let versionProvider: AppVersion
 
-    init(statisticsStore: StatisticsStore = StatisticsUserDefaults(), versionProvider: AppVersion = AppVersion.shared) {
+    init(statisticsStore: StatisticsStore = StatisticsUserDefaults(), versionProvider: AppVersion = AppVersion()) {
         self.statisticsStore = statisticsStore
         self.versionProvider = versionProvider
     }
@@ -72,7 +73,7 @@ struct FeedbackSubmitter: FeedbackSender {
             normalizedUrlString = url ?? ""
         }
 
-        let parameters = [
+        let parameters: [String: String] = [
             "reason": "general",
             "rating": rating?.rawValue ?? "",
             "url": normalizedUrlString,

@@ -100,7 +100,7 @@ struct UserAgent {
     private let baseDesktopAgent: String
     private let versionComponent: String
     private let safariComponent: String
-    private let applicationComponent = "DuckDuckGo/\(AppVersion.shared.majorVersionNumber)"
+    private let applicationComponent = "DuckDuckGo/\(AppVersion().majorVersionNumber)"
     
     init(defaultAgent: String = Constants.fallbackDefaultAgent) {
         versionComponent = UserAgent.createVersionComponent(fromAgent: defaultAgent)
