@@ -101,7 +101,6 @@
 		4BC21A2F27238B7500229F0E /* RunLoopExtensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BC21A2C272388BD00229F0E /* RunLoopExtensionTests.swift */; };
 		4BDCECB92680333100F5C244 /* EmailWaitlistWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BDCECB82680333100F5C244 /* EmailWaitlistWebViewController.swift */; };
 		4BE2756827304F57006B20B0 /* URLRequestExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BE27566272F878F006B20B0 /* URLRequestExtension.swift */; };
-		4BE86C5D2633DBD8001C0E77 /* BrowserServicesKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4BE86C5C2633DBD8001C0E77 /* BrowserServicesKit */; };
 		83004E802193BB8200DA013C /* WKNavigationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83004E7F2193BB8200DA013C /* WKNavigationExtension.swift */; };
 		83004E862193E5ED00DA013C /* TabViewControllerBrowsingMenuExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83004E852193E5ED00DA013C /* TabViewControllerBrowsingMenuExtension.swift */; };
 		83004E882193E8C700DA013C /* TabViewControllerLongPressMenuExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83004E872193E8C700DA013C /* TabViewControllerLongPressMenuExtension.swift */; };
@@ -242,6 +241,8 @@
 		8586A10D24CBA7070049720E /* FindInPageActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8586A10C24CBA7070049720E /* FindInPageActivity.swift */; };
 		8586A10E24CBAF5B0049720E /* Core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F143C2E41E4A4CD400CFDE3A /* Core.framework */; };
 		8586A11024CCCD040049720E /* TabsBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8586A10F24CCCD040049720E /* TabsBarViewController.swift */; };
+		8587948528580A2E0089279C /* BrowserServicesKit in Frameworks */ = {isa = PBXBuildFile; productRef = 8587948428580A2E0089279C /* BrowserServicesKit */; };
+		8587948728580FF90089279C /* DDGSync in Frameworks */ = {isa = PBXBuildFile; productRef = 8587948628580FF90089279C /* DDGSync */; };
 		8588026624E420BD00C24AB6 /* LargeOmniBarStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8588026424E4209900C24AB6 /* LargeOmniBarStateTests.swift */; };
 		8588026A24E424EE00C24AB6 /* AppWidthObserverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8588026824E424AF00C24AB6 /* AppWidthObserverTests.swift */; };
 		8590CB612684D0600089F6BF /* CookieDebugViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8590CB602684D0600089F6BF /* CookieDebugViewController.swift */; };
@@ -259,6 +260,12 @@
 		85A9C37920E0E00C00073340 /* HomeRow.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 85A9C37820E0E00C00073340 /* HomeRow.xcassets */; };
 		85AE668E2097206E0014CF04 /* NotificationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85AE668D2097206E0014CF04 /* NotificationView.xib */; };
 		85AE6690209724120014CF04 /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85AE668F209724120014CF04 /* NotificationView.swift */; };
+		85B52B9A2857C7C90089AEB4 /* Sync.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 85B52B992857C7C90089AEB4 /* Sync.storyboard */; };
+		85B52B9C2857CC450089AEB4 /* SyncViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85B52B9B2857CC450089AEB4 /* SyncViewController.swift */; };
+		85B52B9E2857CE560089AEB4 /* SyncView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85B52B9D2857CE560089AEB4 /* SyncView.swift */; };
+		85B52BA02857CE7C0089AEB4 /* SyncModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85B52B9F2857CE7C0089AEB4 /* SyncModel.swift */; };
+		85B52BA22857D6EB0089AEB4 /* ViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85B52BA12857D6EB0089AEB4 /* ViewExtension.swift */; };
+		85B52BA42857DA470089AEB4 /* SyncManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85B52BA32857DA470089AEB4 /* SyncManager.swift */; };
 		85B718F51FD071E50031A14F /* HTTPSUpgrade.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 85B718F31FD071E50031A14F /* HTTPSUpgrade.xcdatamodeld */; };
 		85B9CB8921AEBDD5009001F1 /* FavoriteHomeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85B9CB8821AEBDD5009001F1 /* FavoriteHomeCell.swift */; };
 		85BA58551F34F49E00C6E8CA /* AppUserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85BA58541F34F49E00C6E8CA /* AppUserDefaults.swift */; };
@@ -996,6 +1003,7 @@
 		858650DA246B111900C36F8A /* DaxOnboarding.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = DaxOnboarding.xcassets; sourceTree = "<group>"; };
 		8586A10C24CBA7070049720E /* FindInPageActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindInPageActivity.swift; sourceTree = "<group>"; };
 		8586A10F24CCCD040049720E /* TabsBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsBarViewController.swift; sourceTree = "<group>"; };
+		858794882858108C0089279C /* BrowserServicesKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = BrowserServicesKit; path = ../BrowserServicesKit; sourceTree = "<group>"; };
 		8588026424E4209900C24AB6 /* LargeOmniBarStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LargeOmniBarStateTests.swift; sourceTree = "<group>"; };
 		8588026824E424AF00C24AB6 /* AppWidthObserverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppWidthObserverTests.swift; sourceTree = "<group>"; };
 		8590CB602684D0600089F6BF /* CookieDebugViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CookieDebugViewController.swift; sourceTree = "<group>"; };
@@ -1013,7 +1021,12 @@
 		85A9C37820E0E00C00073340 /* HomeRow.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = HomeRow.xcassets; sourceTree = "<group>"; };
 		85AE668D2097206E0014CF04 /* NotificationView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NotificationView.xib; sourceTree = "<group>"; };
 		85AE668F209724120014CF04 /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
-		85B52B952857B7190089AEB4 /* BrowserServicesKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = BrowserServicesKit; path = ../BrowserServicesKit; sourceTree = "<group>"; };
+		85B52B992857C7C90089AEB4 /* Sync.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Sync.storyboard; sourceTree = "<group>"; };
+		85B52B9B2857CC450089AEB4 /* SyncViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncViewController.swift; sourceTree = "<group>"; };
+		85B52B9D2857CE560089AEB4 /* SyncView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncView.swift; sourceTree = "<group>"; };
+		85B52B9F2857CE7C0089AEB4 /* SyncModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncModel.swift; sourceTree = "<group>"; };
+		85B52BA12857D6EB0089AEB4 /* ViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtension.swift; sourceTree = "<group>"; };
+		85B52BA32857DA470089AEB4 /* SyncManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncManager.swift; sourceTree = "<group>"; };
 		85B718F41FD071E50031A14F /* HTTPSUpgrade.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = HTTPSUpgrade.xcdatamodel; sourceTree = "<group>"; };
 		85B9CB8821AEBDD5009001F1 /* FavoriteHomeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteHomeCell.swift; sourceTree = "<group>"; };
 		85BA58541F34F49E00C6E8CA /* AppUserDefaults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppUserDefaults.swift; sourceTree = "<group>"; };
@@ -2107,8 +2120,9 @@
 			files = (
 				4B82E98025B634B800656FE7 /* TrackerRadarKit in Frameworks */,
 				F486D33425069BBB002D07D7 /* Kingfisher in Frameworks */,
-				4BE86C5D2633DBD8001C0E77 /* BrowserServicesKit in Frameworks */,
+				8587948528580A2E0089279C /* BrowserServicesKit in Frameworks */,
 				C14882ED27F211A000D59F0C /* SwiftSoup in Frameworks */,
+				8587948728580FF90089279C /* DDGSync in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2464,7 +2478,7 @@
 		84E341891E2F7EFB00BDBA6F = {
 			isa = PBXGroup;
 			children = (
-				85B52B952857B7190089AEB4 /* BrowserServicesKit */,
+				858794882858108C0089279C /* BrowserServicesKit */,
 				6FB030C7234331B400A10DB9 /* Configuration.xcconfig */,
 				84E341941E2F7EFB00BDBA6F /* DuckDuckGo */,
 				F143C2E51E4A4CD400CFDE3A /* Core */,
@@ -2505,11 +2519,11 @@
 		84E341941E2F7EFB00BDBA6F /* DuckDuckGo */ = {
 			isa = PBXGroup;
 			children = (
-				F4147352283BF821004AA7A5 /* Autofill */,
 				AA4D6A8023DE4973007E8790 /* AppIcon */,
 				F1C5ECF31E37812900C599A4 /* Application */,
 				9817C9C121EF58BA00884F65 /* AutoClear */,
 				F15D43211E70849A00BF2CDC /* Autocomplete */,
+				F4147352283BF821004AA7A5 /* Autofill */,
 				F1668BCC1E798025008CBA04 /* Bookmarks */,
 				9830A05725ED0C5D00DB64DE /* BrowsingMenu */,
 				310D09192799EF5C00DC0060 /* Downloads */,
@@ -2528,6 +2542,7 @@
 				F1AB2B401E3F75A000868554 /* Settings */,
 				0A6CC0EE23904D5400E4F627 /* Settings.bundle */,
 				F1E249411EF2075C008C947A /* SiteMonitoring */,
+				85B52B962857C75B0089AEB4 /* Sync */,
 				F13B4BF41F18C74500814661 /* Tabs */,
 				F1386BA21E6846320062FC3C /* TabSwitcher */,
 				98F3A1D6217B36EE0011A0D4 /* Themes */,
@@ -2776,6 +2791,19 @@
 				85AE668F209724120014CF04 /* NotificationView.swift */,
 			);
 			name = Notifications;
+			sourceTree = "<group>";
+		};
+		85B52B962857C75B0089AEB4 /* Sync */ = {
+			isa = PBXGroup;
+			children = (
+				85B52B992857C7C90089AEB4 /* Sync.storyboard */,
+				85B52BA32857DA470089AEB4 /* SyncManager.swift */,
+				85B52B9F2857CE7C0089AEB4 /* SyncModel.swift */,
+				85B52B9D2857CE560089AEB4 /* SyncView.swift */,
+				85B52B9B2857CC450089AEB4 /* SyncViewController.swift */,
+				85B52BA12857D6EB0089AEB4 /* ViewExtension.swift */,
+			);
+			name = Sync;
 			sourceTree = "<group>";
 		};
 		85B9CB8321AEBD72009001F1 /* Cells */ = {
@@ -4248,8 +4276,9 @@
 			packageProductDependencies = (
 				F486D33325069BBB002D07D7 /* Kingfisher */,
 				4B82E97F25B634B800656FE7 /* TrackerRadarKit */,
-				4BE86C5C2633DBD8001C0E77 /* BrowserServicesKit */,
 				C14882EC27F211A000D59F0C /* SwiftSoup */,
+				8587948428580A2E0089279C /* BrowserServicesKit */,
+				8587948628580FF90089279C /* DDGSync */,
 			);
 			productName = Core;
 			productReference = F143C2E41E4A4CD400CFDE3A /* Core.framework */;
@@ -4364,9 +4393,9 @@
 				F486D2FD25069744002D07D7 /* XCRemoteSwiftPackageReference "OHHTTPStubs" */,
 				F486D3022506975E002D07D7 /* XCRemoteSwiftPackageReference "swifter" */,
 				4B82E97E25B634B800656FE7 /* XCRemoteSwiftPackageReference "TrackerRadarKit" */,
-				4BE86C5B2633DBD7001C0E77 /* XCRemoteSwiftPackageReference "BrowserServicesKit" */,
 				C14882EB27F211A000D59F0C /* XCRemoteSwiftPackageReference "SwiftSoup" */,
 				4B5167402824B492004C67BA /* XCRemoteSwiftPackageReference "lottie-ios" */,
+				8587947F285806C90089279C /* XCRemoteSwiftPackageReference "BrowserServicesKit" */,
 			);
 			productRefGroup = 84E341931E2F7EFB00BDBA6F /* Products */;
 			projectDirPath = "";
@@ -4458,6 +4487,7 @@
 				AA4D6ACD23DE4D27007E8790 /* AppIconPurple29x29@3x.png in Resources */,
 				AA4D6A8C23DE49A5007E8790 /* AppIconBlack40x40@2x.png in Resources */,
 				85AE668E2097206E0014CF04 /* NotificationView.xib in Resources */,
+				85B52B9A2857C7C90089AEB4 /* Sync.storyboard in Resources */,
 				AA4D6AFA23DF0CF6007E8790 /* AppIconRed29x29@3x.png in Resources */,
 				85A313972028E78A00327D00 /* release_notes.txt in Resources */,
 				9865DFFD22A84CF300D27829 /* FavoriteHomeCell.xib in Resources */,
@@ -4739,6 +4769,7 @@
 				984D035824ACCC6F0066CFB8 /* TabViewListCell.swift in Sources */,
 				AA3D854923DA1DFB00788410 /* AppIcon.swift in Sources */,
 				8590CB612684D0600089F6BF /* CookieDebugViewController.swift in Sources */,
+				85B52B9E2857CE560089AEB4 /* SyncView.swift in Sources */,
 				4B6484EB27FD1E350050A7A1 /* NotificationService.swift in Sources */,
 				83134D7D20E2D725006CE65D /* FeedbackSender.swift in Sources */,
 				314C92BA27C3E7CB0042EC96 /* QuickLookContainerViewController.swift in Sources */,
@@ -4811,11 +4842,13 @@
 				851B12CC22369931004781BC /* AtbAndVariantCleanup.swift in Sources */,
 				85F2FFCF2211F8E5006BB258 /* TabSwitcherViewController+KeyCommands.swift in Sources */,
 				F17922E01E71BB59006E3D97 /* AutocompleteViewControllerDelegate.swift in Sources */,
+				85B52BA42857DA470089AEB4 /* SyncManager.swift in Sources */,
 				8528AE7C212EF4A200D0BD74 /* AppRatingPrompt.swift in Sources */,
 				31CB4251273AF50700FA0F3F /* SpeechRecognizerProtocol.swift in Sources */,
 				85EE7F59224673C5000FE757 /* WebContainerNavigationController.swift in Sources */,
 				F10307391E7C5E310059FEC7 /* NoBookmarksCell.swift in Sources */,
 				981FED6E22025151008488D7 /* BlankSnapshotViewController.swift in Sources */,
+				85B52BA02857CE7C0089AEB4 /* SyncModel.swift in Sources */,
 				98F3A1DC217B373E0011A0D4 /* DarkTheme.swift in Sources */,
 				851B128822200575004781BC /* Onboarding.swift in Sources */,
 				3151F0EE2735800800226F58 /* VoiceSearchFeedbackView.swift in Sources */,
@@ -4856,6 +4889,7 @@
 				F1E90C201E678E7C005E7E21 /* HomeControllerDelegate.swift in Sources */,
 				4B6484F127FD1E350050A7A1 /* MacBrowserWaitlistStorage.swift in Sources */,
 				988CF20C2451A4A400B06CCD /* SiteRatingContainerView.swift in Sources */,
+				85B52BA22857D6EB0089AEB4 /* ViewExtension.swift in Sources */,
 				F17922DE1E7192E6006E3D97 /* SuggestionTableViewCell.swift in Sources */,
 				986C7FA724171C6000A3557D /* BrokenSiteCategories.swift in Sources */,
 				98DA6ECA2181E41F00E65433 /* ThemeManager.swift in Sources */,
@@ -4878,6 +4912,7 @@
 				858650D9246B0D3C00C36F8A /* DaxOnboardingViewController.swift in Sources */,
 				F1A5683A1E70F98E0081082E /* AutocompleteRequest.swift in Sources */,
 				8565A34B1FC8D96B00239327 /* LaunchTabNotification.swift in Sources */,
+				85B52B9C2857CC450089AEB4 /* SyncViewController.swift in Sources */,
 				316931D727BD10BB0095F5ED /* SaveToDownloadsAlert.swift in Sources */,
 				85449EFD23FDA71F00512AAF /* KeyboardSettings.swift in Sources */,
 				98FA4BB72440D0A800894CD8 /* PrivacyProtectionIconSource.swift in Sources */,
@@ -6883,12 +6918,12 @@
 				version = 1.0.4;
 			};
 		};
-		4BE86C5B2633DBD7001C0E77 /* XCRemoteSwiftPackageReference "BrowserServicesKit" */ = {
+		8587947F285806C90089279C /* XCRemoteSwiftPackageReference "BrowserServicesKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/duckduckgo/BrowserServicesKit.git";
+			repositoryURL = "https://github.com/DuckDuckGo/BrowserServicesKit";
 			requirement = {
-				kind = exactVersion;
-				version = 16.0.0;
+				kind = revision;
+				revision = 9be1997d9893314ab333ed3e47771da691f53a5a;
 			};
 		};
 		C14882EB27F211A000D59F0C /* XCRemoteSwiftPackageReference "SwiftSoup" */ = {
@@ -6936,10 +6971,15 @@
 			package = 4B82E97E25B634B800656FE7 /* XCRemoteSwiftPackageReference "TrackerRadarKit" */;
 			productName = TrackerRadarKit;
 		};
-		4BE86C5C2633DBD8001C0E77 /* BrowserServicesKit */ = {
+		8587948428580A2E0089279C /* BrowserServicesKit */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 4BE86C5B2633DBD7001C0E77 /* XCRemoteSwiftPackageReference "BrowserServicesKit" */;
+			package = 8587947F285806C90089279C /* XCRemoteSwiftPackageReference "BrowserServicesKit" */;
 			productName = BrowserServicesKit;
+		};
+		8587948628580FF90089279C /* DDGSync */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8587947F285806C90089279C /* XCRemoteSwiftPackageReference "BrowserServicesKit" */;
+			productName = DDGSync;
 		};
 		C14882EC27F211A000D59F0C /* SwiftSoup */ = {
 			isa = XCSwiftPackageProductDependency;

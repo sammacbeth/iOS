@@ -75,6 +75,7 @@ public struct UserDefaultsWrapper<T> {
         
         case featureFlaggingDidVerifyInternalUser = "com.duckduckgo.app.featureFlaggingDidVerifyInternalUser"
 
+        case syncBookmarksLastModified = "com.duckduckgo.sync.bookmarks.lastModified"
     }
 
     private let key: Key
