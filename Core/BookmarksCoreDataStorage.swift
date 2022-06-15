@@ -20,6 +20,7 @@
 import Foundation
 import CoreData
 import os.log
+import DDGSync
 
 // swiftlint:disable file_length
 
@@ -35,7 +36,7 @@ public typealias BookmarkItemSavedMainThreadCompletion = ((NSManagedObjectID?, B
 public typealias BookmarkExistsMainThreadCompletion = ((Bool) -> Void)
 
 public typealias BookmarkItemDeletedBackgroundThreadCompletion = ((Bool, BookmarksCoreDataStorageError?) -> Void)
-public typealias BookmarkItemUpdatedBackgroundThreadCompletion = ((Bool, BookmarksCoreDataStorageError?) -> Void)
+public typealias BookmarkItemUpdatedBackgroundThreadCompletion = ((BookmarkItemManagedObject?, BookmarksCoreDataStorageError?) -> Void)
 public typealias BookmarkItemIndexUpdatedBackgroundThreadCompletion = ((Bool, BookmarksCoreDataStorageError?) -> Void)
 public typealias BookmarkConvertedBackgroundThreadCompletion = ((Bool, BookmarksCoreDataStorageError?) -> Void)
 
@@ -342,7 +343,7 @@ extension BookmarksCoreDataStorage {
             let mo = try? privateContext.existingObject(with: folderID)
             guard let folder = mo as? BookmarkFolderManagedObject else {
                 assertionFailure("Failed to get folder")
-                completion?(false, .fetchingExistingItemFailed)
+                completion?(nil, .fetchingExistingItemFailed)
                 return
             }
             
@@ -350,7 +351,7 @@ extension BookmarksCoreDataStorage {
                 let parentMO = try? privateContext.existingObject(with: newParentID)
                 guard let newParentMO = parentMO as? BookmarkFolderManagedObject else {
                     assertionFailure("Failed to get new parent")
-                    completion?(false, .fetchingParentFailed)
+                    completion?(nil, .fetchingParentFailed)
                     return
                 }
                 
@@ -362,10 +363,10 @@ extension BookmarksCoreDataStorage {
                 try privateContext.save()
             } catch {
                 assertionFailure("Updating folder failed")
-                completion?(false, .contextSaveError)
+                completion?(nil, .contextSaveError)
                 return
             }
-            completion?(true, nil)
+            completion?(folder, nil)
         }
     }
     
@@ -380,7 +381,7 @@ extension BookmarksCoreDataStorage {
             let mo = try? privateContext.existingObject(with: favoriteID)
             guard let favorite = mo as? BookmarkManagedObject else {
                 assertionFailure("Failed to get favorite")
-                completion?(false, .fetchingExistingItemFailed)
+                completion?(nil, .fetchingExistingItemFailed)
                 return
             }
 
@@ -391,10 +392,10 @@ extension BookmarksCoreDataStorage {
                 try privateContext.save()
             } catch {
                 assertionFailure("Updating favorite failed")
-                completion?(false, .contextSaveError)
+                completion?(nil, .contextSaveError)
                 return
             }
-            completion?(true, nil)
+            completion?(favorite, nil)
         }
     }
     
@@ -410,7 +411,7 @@ extension BookmarksCoreDataStorage {
             let mo = try? privateContext.existingObject(with: bookmarkID)
             guard let bookmark = mo as? BookmarkManagedObject else {
                 assertionFailure("Failed to get bookmark")
-                completion?(false, .fetchingExistingItemFailed)
+                completion?(nil, .fetchingExistingItemFailed)
                 return
             }
             
@@ -418,7 +419,7 @@ extension BookmarksCoreDataStorage {
                 let parentMO = try? privateContext.existingObject(with: newParentID)
                 guard let newParentMO = parentMO as? BookmarkFolderManagedObject else {
                     assertionFailure("Failed to get new parent")
-                    completion?(false, .fetchingParentFailed)
+                    completion?(nil, .fetchingParentFailed)
                     return
                 }
                 
@@ -432,10 +433,10 @@ extension BookmarksCoreDataStorage {
                 try privateContext.save()
             } catch {
                 assertionFailure("Updating bookmark failed")
-                completion?(false, .contextSaveError)
+                completion?(nil, .contextSaveError)
                 return
             }
-            completion?(true, nil)
+            completion?(bookmark, nil)
         }
     }
         
@@ -910,6 +911,33 @@ extension BookmarksCoreDataStorage {
 
 // MARK: Constants
 extension BookmarksCoreDataStorage {
+    
+    public func assignUUIDsWhereNeeded() async throws {
+        return try await withCheckedThrowingContinuation { continuation in
+            let context = getTemporaryPrivateContext()
+            context.perform {
+                let request = BookmarkItemManagedObject.fetchRequest()
+                request.predicate = NSPredicate(format: "uuid is nil")
+                if let results = try? self.viewContext.fetch(request) {
+                    results.forEach {
+                        $0.uuid = UUID()
+                    }
+                    do {
+                        try context.save()
+                    } catch {
+                        continuation.resume(throwing: BookmarksCoreDataStorageError.contextSaveError)
+                        return
+                    }
+                }
+                continuation.resume()
+            }
+        }
+    }
+    
+}
+
+// MARK: Constants
+extension BookmarksCoreDataStorage {
     enum Constants {
         static let privateContextName = "EditBookmarksAndFolders"
         static let viewContextName = "ViewBookmarksAndFolders"
@@ -920,72 +948,6 @@ extension BookmarksCoreDataStorage {
         static let databaseName = "BookmarksAndFolders"
 
         static let groupName = "\(Global.groupIdPrefix).bookmarks"
-    }
-}
-
-public class BookmarksCoreDataStorageMigration {
-    
-    @UserDefaultsWrapper(key: .bookmarksMigratedFromUserDefaultsToCD, defaultValue: false)
-    private static var migratedFromUserDefaults: Bool
-    
-    /// Migrates bookmark data to Core Data.
-    ///
-    /// - Returns: A boolean representing whether the migration took place. If the migration has already happened and this function is called, it returns `false`.
-    public static func migrate(fromBookmarkStore bookmarkStore: BookmarkStore, context: NSManagedObjectContext) -> Bool {
-        if migratedFromUserDefaults {
-            return false
-        }
-        
-        context.performAndWait {
-            let countRequest = NSFetchRequest<BookmarkFolderManagedObject>(entityName: BookmarksCoreDataStorage.Constants.folderClassName)
-            countRequest.fetchLimit = 1
-            let result = (try? context.count(for: countRequest)) ?? 0
-            
-            guard result == 0 else {
-                // Already migrated
-                return
-            }
-            
-            let favoritesFolder = BookmarksCoreDataStorage.rootFavoritesFolderManagedObject(context)
-            let bookmarksFolder = BookmarksCoreDataStorage.rootFolderManagedObject(context)
-            
-            func migrateLink(_ link: Link, isFavorite: Bool) {
-                let managedObject = NSEntityDescription.insertNewObject(
-                    forEntityName: BookmarksCoreDataStorage.Constants.bookmarkClassName,
-                    into: context)
-                guard let bookmark = managedObject as? BookmarkManagedObject else {
-                    assertionFailure("Inserting new bookmark failed")
-                    return
-                }
-                bookmark.url = link.url
-                bookmark.title = link.title
-                bookmark.isFavorite = isFavorite
-                
-                let folder = isFavorite ? favoritesFolder : bookmarksFolder
-                bookmark.parent = folder
-            }
-            
-            let favorites = bookmarkStore.favorites
-            for favorite in favorites {
-                migrateLink(favorite, isFavorite: true)
-            }
-            
-            let bookmarks = bookmarkStore.bookmarks
-            for bookmark in bookmarks {
-                migrateLink(bookmark, isFavorite: false)
-            }
-                        
-            do {
-                try context.save()
-            } catch {
-                fatalError("Error creating top level bookmark folders")
-            }
-            
-            bookmarkStore.deleteAllData()
-        }
-
-        migratedFromUserDefaults = true
-        return true
     }
 }
 

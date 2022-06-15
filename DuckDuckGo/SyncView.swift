@@ -18,11 +18,12 @@
 //
 
 import SwiftUI
+import DDGSync
 
 @available(iOS 14, *)
 struct SyncView: View {
     
-    @ObservedObject var model = SyncModel(deviceName: UIDevice.current.name)
+    @ObservedObject var model = SyncModel(sync: DDGSync(), deviceName: UIDevice.current.name)
     
     var body: some View {
         VStack(spacing: 12) {

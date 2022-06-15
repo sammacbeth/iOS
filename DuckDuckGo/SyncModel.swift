@@ -20,10 +20,11 @@
 import Foundation
 import DDGSync
 import UIKit
+import Core
 
 @MainActor
 class SyncModel: ObservableObject {
- 
+     
     @Published var isAuthenticated = false
     @Published var isBusy = false
     @Published var isScanning = false
@@ -45,8 +46,8 @@ class SyncModel: ObservableObject {
     let sync: DDGSyncing
     let deviceName: String
     
-    init(syncManager: SyncManaging = SyncManager.shared, deviceName: String) {
-        self.sync = syncManager.sync
+    init(sync: DDGSyncing, deviceName: String) {
+        self.sync = sync
         self.deviceName = deviceName
         isAuthenticated = sync.isAuthenticated
     }
@@ -62,6 +63,7 @@ class SyncModel: ObservableObject {
 
         Task {
             do {
+                try await allocateUUIDsToBookmarks()
                 try await sync.createAccount(deviceName: deviceName)
                 isAuthenticated = sync.isAuthenticated
             } catch {
@@ -86,6 +88,18 @@ class SyncModel: ObservableObject {
             }
             isBusy = false
         }
+    }
+
+    func allocateUUIDsToBookmarks() async throws {
+        try await BookmarksManager().assignUUIDsWhereNeeded()
+    }
+    
+}
+
+extension BookmarksManager {
+ 
+    func assignUUIDsWhereNeeded() async throws {
+        try await coreDataStorage.assignUUIDsWhereNeeded()
     }
     
 }

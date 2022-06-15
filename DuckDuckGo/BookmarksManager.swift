@@ -20,6 +20,7 @@
 import Core
 import WidgetKit
 import CoreData
+import DDGSync
 
 class BookmarksManager {
     
@@ -28,9 +29,15 @@ class BookmarksManager {
     }
 
     private(set) var coreDataStorage: BookmarksCoreDataStorage
-
-    init(coreDataStore: BookmarksCoreDataStorage = BookmarksCoreDataStorage.shared) {
+    
+    private let sync: DDGSyncing
+    
+    init(coreDataStore: BookmarksCoreDataStorage = BookmarksCoreDataStorage.shared,
+         sync: DDGSyncing = DDGSync()) {
+        
         self.coreDataStorage = coreDataStore
+        self.sync = sync
+        
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(dataDidChange),
                                                name: BookmarksCoreDataStorage.Notifications.dataDidChange,
@@ -133,7 +140,17 @@ class BookmarksManager {
                 newParentID: NSManagedObjectID,
                 completion: BookmarkItemUpdatedBackgroundThreadCompletion? = nil) {
         
-        coreDataStorage.update(bookmarkID: bookmark.objectID, newTitle: newTitle, newURL: newURL, newParentID: newParentID, completion: completion)
+        coreDataStorage.update(bookmarkID: bookmark.objectID,
+                               newTitle: newTitle,
+                               newURL: newURL,
+                               newParentID: newParentID) { item, error in
+
+            guard error == nil else { return }
+            guard let bookmark = item as? BookmarkManagedObject else { return }
+            self.sync.persistBookmark(bookmark, fromBookmarksManager: self)
+            
+        }
+        
         updateFaviconIfNeeded(bookmark, newURL)
         if newParentID == topLevelBookmarksFolder?.objectID {
             Pixel.fire(pixel: .bookmarkEditedAtTopLevel)

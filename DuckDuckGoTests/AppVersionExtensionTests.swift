@@ -19,7 +19,7 @@
 
 import XCTest
 @testable import DuckDuckGo
-@testable import Core
+@testable import BrowserServicesKit
 
 class AppVersionExtensionTests: XCTestCase {
 
@@ -29,27 +29,16 @@ class AppVersionExtensionTests: XCTestCase {
         static let build = "14"
     }
 
-    private var mockBundle: MockBundle!
     private var testee: AppVersion!
 
     override func setUp() {
         super.setUp()
         
-        mockBundle = MockBundle()
-        testee = AppVersion(bundle: mockBundle)
+        testee = AppVersion(bundle: MockBundle.create())
     }
 
     func testVersionAndBuildContainsCorrectInformation() {
-        mockBundle.add(name: AppVersion.Keys.name, value: Constants.name)
-        mockBundle.add(name: AppVersion.Keys.versionNumber, value: Constants.version)
-        mockBundle.add(name: AppVersion.Keys.buildNumber, value: Constants.build)
-        XCTAssertEqual("2.0.4.14", testee.versionAndBuildNumber)
+        XCTAssertEqual("\(Constants.version).\(Constants.build)", testee.versionAndBuildNumber)
     }
     
-    func testLocalisedTextContainsNameVersionAndBuild() {
-        mockBundle.add(name: AppVersion.Keys.name, value: Constants.name)
-        mockBundle.add(name: AppVersion.Keys.versionNumber, value: Constants.version)
-        mockBundle.add(name: AppVersion.Keys.buildNumber, value: Constants.build)
-        XCTAssertEqual("DuckDuckGo 2.0.4.14", testee.localized)
-    }
 }

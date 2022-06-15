@@ -21,15 +21,12 @@ import Foundation
 @testable import DuckDuckGo
 @testable import Core
 
-class MockBundle: InfoBundle {
-
-    private var mockEntries = [String: Any]()
-
-    func object(forInfoDictionaryKey key: String) -> Any? {
-        return mockEntries[key]
+class MockBundle {
+    
+    static func create() -> Bundle {
+        guard let url = TestDataLoader().bundle.url(forResource: "Info", withExtension: "plist") else { fatalError("!") }
+        let folder = url.deletingLastPathComponent().appendingPathComponent("MockFiles/MockBundle")
+        return Bundle(url: folder)!
     }
-
-    func add(name: String, value: Any) {
-        mockEntries[name] = value
-    }
+    
 }

@@ -19,6 +19,7 @@
 
 import XCTest
 @testable import Core
+@testable import BrowserServicesKit
 
 class AppVersionTests: XCTestCase {
 
@@ -29,38 +30,31 @@ class AppVersionTests: XCTestCase {
         static let identifier = "com.duckduckgo.mobile.ios"
     }
 
-    private var mockBundle: MockBundle!
     private var testee: AppVersion!
 
     override func setUp() {
         super.setUp()
         
-        mockBundle = MockBundle()
-        testee = AppVersion(bundle: mockBundle)
+        testee = AppVersion(bundle: MockBundle.create())
     }
 
     func testName() {
-        mockBundle.add(name: AppVersion.Keys.name, value: Constants.name)
         XCTAssertEqual(Constants.name, testee.name)
     }
 
     func testMajorNumber() {
-        mockBundle.add(name: AppVersion.Keys.versionNumber, value: Constants.version)
         XCTAssertEqual("2", testee.majorVersionNumber)
     }
     
     func testVersionNumber() {
-        mockBundle.add(name: AppVersion.Keys.versionNumber, value: Constants.version)
         XCTAssertEqual(Constants.version, testee.versionNumber)
     }
 
     func testIdentifier() {
-        mockBundle.add(name: AppVersion.Keys.identifier, value: Constants.identifier)
         XCTAssertEqual(Constants.identifier, testee.identifier)
     }
 
     func testBuildNumber() {
-        mockBundle.add(name: AppVersion.Keys.buildNumber, value: Constants.build)
         XCTAssertEqual(Constants.build, testee.buildNumber)
     }
 }
