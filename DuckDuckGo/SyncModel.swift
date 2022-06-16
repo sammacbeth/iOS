@@ -49,12 +49,29 @@ class SyncModel: ObservableObject {
     init(sync: DDGSyncing, deviceName: String) {
         self.sync = sync
         self.deviceName = deviceName
-        isAuthenticated = sync.isAuthenticated
+        refreshAuthStatus()
     }
-    
+
+    func connectWithRecoveryCode(_ code: String) {
+        guard let data = Data(base64Encoded: code) else {
+            errorMessage = "Invalid recovery code (1)"
+            return
+        }
+
+        Task {
+            do {
+                try await sync.login(recoveryKey: data, deviceName: deviceName)
+                isAuthenticated = isAuthenticated
+            } catch {
+                errorMessage = "\(error)"
+            }
+        }
+
+    }
+
     func disconnect() {
         try? sync.disconnect()
-        self.isAuthenticated = false
+        refreshAuthStatus()
     }
     
     func createAccount() {
@@ -65,7 +82,7 @@ class SyncModel: ObservableObject {
             do {
                 try await allocateUUIDsToBookmarks()
                 try await sync.createAccount(deviceName: deviceName)
-                isAuthenticated = sync.isAuthenticated
+                refreshAuthStatus()
             } catch {
                 errorMessage = "\(error)"
             }
@@ -84,6 +101,7 @@ class SyncModel: ObservableObject {
             do {
                 try await allocateUUIDsToBookmarks()
                 try await sync.fetchLatest()
+                refreshAuthStatus()
             } catch {
                 errorMessage = "\(error)"
             }
@@ -91,7 +109,12 @@ class SyncModel: ObservableObject {
         }
     }
 
-    func allocateUUIDsToBookmarks() async throws {
+    private func refreshAuthStatus() {
+        isAuthenticated = sync.isAuthenticated
+        recoveryCode = sync.recoveryCode ?? Data()
+    }
+
+    private func allocateUUIDsToBookmarks() async throws {
         try await BookmarksManager().assignUUIDsWhereNeeded()
     }
     

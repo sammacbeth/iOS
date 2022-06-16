@@ -283,14 +283,15 @@ extension BookmarksCoreDataStorage {
         }
     }
 
-    public func saveNewFavorite(withTitle title: String, url: URL, completion: BookmarkItemSavedMainThreadCompletion? = nil) {
-        createBookmark(url: url, title: title, isFavorite: true, completion: completion)
+    public func saveNewFavorite(withTitle title: String, url: URL, uuidString: String? = nil, completion: BookmarkItemSavedMainThreadCompletion? = nil) {
+        createBookmark(url: url, title: title, isFavorite: true, uuidString: uuidString, completion: completion)
     }
     
     public func saveNewFavorite(withTitle title: String,
-                                url: URL) async throws -> NSManagedObjectID {
+                                url: URL,
+                                uuidString: String? = nil) async throws -> NSManagedObjectID {
         return try await withCheckedThrowingContinuation { continuation in
-            saveNewFavorite(withTitle: title, url: url) { managedObjectID, error in
+            saveNewFavorite(withTitle: title, url: url, uuidString: uuidString) { managedObjectID, error in
                 if let error = error {
                     assertionFailure("Saving favorite failed")
                     return continuation.resume(throwing: error)
@@ -307,17 +308,19 @@ extension BookmarksCoreDataStorage {
 
     public func saveNewBookmark(withTitle title: String,
                                 url: URL,
+                                uuidString: String? = nil,
                                 parentID: NSManagedObjectID?,
                                 completion: BookmarkItemSavedMainThreadCompletion? = nil) {
         
-        createBookmark(url: url, title: title, isFavorite: false, parentID: parentID, completion: completion)
+        createBookmark(url: url, title: title, isFavorite: false, uuidString: uuidString, parentID: parentID, completion: completion)
     }
     
     public func saveNewBookmark(withTitle title: String,
                                 url: URL,
+                                uuidString: String? = nil,
                                 parentID: NSManagedObjectID?) async throws -> NSManagedObjectID {
         return try await withCheckedThrowingContinuation { continuation in
-            saveNewBookmark(withTitle: title, url: url, parentID: parentID) { managedObjectID, error in
+            saveNewBookmark(withTitle: title, url: url, uuidString: uuidString, parentID: parentID) { managedObjectID, error in
                 if let error = error {
                     assertionFailure("Saving bookmark failed")
                     return continuation.resume(throwing: error)
@@ -824,6 +827,7 @@ extension BookmarksCoreDataStorage {
     private func createBookmark(url: URL,
                                 title: String,
                                 isFavorite: Bool,
+                                uuidString: String? = nil,
                                 parentID: NSManagedObjectID? = nil,
                                 completion: BookmarkItemSavedMainThreadCompletion? = nil) {
         
@@ -844,6 +848,7 @@ extension BookmarksCoreDataStorage {
             bookmark.url = url
             bookmark.title = title
             bookmark.isFavorite = isFavorite
+            bookmark.uuid = uuidString != nil ? UUID(uuidString: uuidString!) : nil
             
             self.updateParentAndSave(of: bookmark, parentID: parentID, context: privateContext, completion: completion)
         }

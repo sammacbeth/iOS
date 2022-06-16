@@ -24,7 +24,10 @@ import DDGSync
 struct SyncView: View {
     
     @ObservedObject var model = SyncModel(sync: DDGSync(), deviceName: UIDevice.current.name)
-    
+
+    @State var codeBackgroundColor: Color = .gray.opacity(0.1)
+    @State var pastedRecoveryCode: String = ""
+
     var body: some View {
         VStack(spacing: 12) {
             
@@ -36,8 +39,22 @@ struct SyncView: View {
                 Spacer()
                 
                 // TODO QR code to connect another device
-                QRCodeView(data: model.recoveryCode, size: 192)
-                
+                // QRCodeView(data: model.recoveryCode, size: 192)
+                Text(model.recoveryCode.base64EncodedString())
+                    .multilineTextAlignment(.leading)
+                    .lineLimit(nil)
+                    .padding()
+                    .background(codeBackgroundColor)
+                    .onTapGesture {
+                        UIPasteboard.general.string = model.recoveryCode.base64EncodedString()
+                        codeBackgroundColor = .red.opacity(0.1)
+                        withAnimation(.linear.delay(0.3)) {
+                            codeBackgroundColor = Color.gray.opacity(0.1)
+                        }
+                    }
+                    .cornerRadius(8)
+                    .padding()
+
                 Spacer()
                 
                 Button("Fetch Now") {
@@ -60,13 +77,21 @@ struct SyncView: View {
                 }
                 .disabled(model.isBusy)
                         
-                CodeScannerView(isScanning: $model.isScanning,
-                                scannedCode: $model.scannedCode)
-                        
-                Button("Scan Code") {
-                    model.startScanning()
-                }
-                .disabled(model.isBusy)
+//                CodeScannerView(isScanning: $model.isScanning,
+//                                scannedCode: $model.scannedCode)
+
+                TextField("Paste Recovery Code Here", text: $pastedRecoveryCode)
+                    .background(codeBackgroundColor)
+                    .padding()
+
+                Button("Connect") {
+                    model.connectWithRecoveryCode(pastedRecoveryCode)
+                }.disabled(model.isBusy)
+
+//                Button("Scan Code") {
+//                    model.startScanning()
+//                }
+//                .disabled(model.isBusy)
                 
                 SwiftUI.ProgressView()
                     .visibility(model.isBusy ? .visible : .invisible)

@@ -266,7 +266,7 @@
 		85B52B9E2857CE560089AEB4 /* SyncView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85B52B9D2857CE560089AEB4 /* SyncView.swift */; };
 		85B52BA02857CE7C0089AEB4 /* SyncModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85B52B9F2857CE7C0089AEB4 /* SyncModel.swift */; };
 		85B52BA22857D6EB0089AEB4 /* ViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85B52BA12857D6EB0089AEB4 /* ViewExtension.swift */; };
-		85B52BA42857DA470089AEB4 /* DDGSyncExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85B52BA32857DA470089AEB4 /* DDGSyncExtension.swift */; };
+		85B52BA42857DA470089AEB4 /* SyncExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85B52BA32857DA470089AEB4 /* SyncExtensions.swift */; };
 		85B718F51FD071E50031A14F /* HTTPSUpgrade.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 85B718F31FD071E50031A14F /* HTTPSUpgrade.xcdatamodeld */; };
 		85B9CB8921AEBDD5009001F1 /* FavoriteHomeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85B9CB8821AEBDD5009001F1 /* FavoriteHomeCell.swift */; };
 		85BA58551F34F49E00C6E8CA /* AppUserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85BA58541F34F49E00C6E8CA /* AppUserDefaults.swift */; };
@@ -1028,7 +1028,7 @@
 		85B52B9D2857CE560089AEB4 /* SyncView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncView.swift; sourceTree = "<group>"; };
 		85B52B9F2857CE7C0089AEB4 /* SyncModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncModel.swift; sourceTree = "<group>"; };
 		85B52BA12857D6EB0089AEB4 /* ViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtension.swift; sourceTree = "<group>"; };
-		85B52BA32857DA470089AEB4 /* DDGSyncExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDGSyncExtension.swift; sourceTree = "<group>"; };
+		85B52BA32857DA470089AEB4 /* SyncExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncExtensions.swift; sourceTree = "<group>"; };
 		85B718F41FD071E50031A14F /* HTTPSUpgrade.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = HTTPSUpgrade.xcdatamodel; sourceTree = "<group>"; };
 		85B9CB8821AEBDD5009001F1 /* FavoriteHomeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteHomeCell.swift; sourceTree = "<group>"; };
 		85BA58541F34F49E00C6E8CA /* AppUserDefaults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppUserDefaults.swift; sourceTree = "<group>"; };
@@ -2797,7 +2797,7 @@
 		85B52B962857C75B0089AEB4 /* Sync */ = {
 			isa = PBXGroup;
 			children = (
-				85B52BA32857DA470089AEB4 /* DDGSyncExtension.swift */,
+				85B52BA32857DA470089AEB4 /* SyncExtensions.swift */,
 				85B52B992857C7C90089AEB4 /* Sync.storyboard */,
 				85B52B9F2857CE7C0089AEB4 /* SyncModel.swift */,
 				85B52B9D2857CE560089AEB4 /* SyncView.swift */,
@@ -4843,7 +4843,7 @@
 				851B12CC22369931004781BC /* AtbAndVariantCleanup.swift in Sources */,
 				85F2FFCF2211F8E5006BB258 /* TabSwitcherViewController+KeyCommands.swift in Sources */,
 				F17922E01E71BB59006E3D97 /* AutocompleteViewControllerDelegate.swift in Sources */,
-				85B52BA42857DA470089AEB4 /* DDGSyncExtension.swift in Sources */,
+				85B52BA42857DA470089AEB4 /* SyncExtensions.swift in Sources */,
 				8528AE7C212EF4A200D0BD74 /* AppRatingPrompt.swift in Sources */,
 				31CB4251273AF50700FA0F3F /* SpeechRecognizerProtocol.swift in Sources */,
 				85EE7F59224673C5000FE757 /* WebContainerNavigationController.swift in Sources */,

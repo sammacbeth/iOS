@@ -1,5 +1,5 @@
 //
-//  DDGSyncExtension.swift
+//  SyncExtensions.swift
 //  DuckDuckGo
 //
 //  Copyright © 2022 DuckDuckGo. All rights reserved.
@@ -116,22 +116,22 @@ extension DDGSyncing {
 extension BookmarksManager {
 
     func updateSavedSiteItem(_ item: SavedSiteItem) async {
-        if let bookmark = await coreDataStorage.bookmarkWithUUID(item.id) {
+        guard let url = item.url.punycodedUrl else { return }
 
-            // TODO
-
+        if let id = await coreDataStorage.idForBookmarkWithUUID(item.id) {
+            let parentID = await coreDataStorage.idForParentOrTopLevelFolderWithUUID(item.parent)
+            coreDataStorage.update(bookmarkID: id, newTitle: item.title, newURL: url, newParentID: parentID)
         } else {
-            guard let url = item.url.punycodedUrl else { return }
+            var parentID: NSManagedObjectID?
+            if let parentUUID = item.parent {
+                parentID = await coreDataStorage.idForFolderWithUUID(parentUUID)
+            }
 
             if item.isFavorite {
-                _ = try? await coreDataStorage.saveNewFavorite(withTitle: item.title, url: url)
+                _ = try? await coreDataStorage.saveNewFavorite(withTitle: item.title, url: url, uuidString: item.id)
             } else {
-                var parentID: NSManagedObjectID?
-                if let parentUUID = item.parent {
-                    parentID = await coreDataStorage.idForFolderWithUUID(parentUUID)
-                }
 
-                _ = try? await coreDataStorage.saveNewBookmark(withTitle: item.title, url: url, parentID: parentID)
+                _ = try? await coreDataStorage.saveNewBookmark(withTitle: item.title, url: url, uuidString: item.id, parentID: parentID)
             }
         }
     }
@@ -148,6 +148,13 @@ extension BookmarksManager {
 
 extension BookmarksCoreDataStorage {
 
+    func idForParentOrTopLevelFolderWithUUID(_ uuidString: String?) async -> NSManagedObjectID {
+        guard let uuidString = uuidString, let parentID = await idForFolderWithUUID(uuidString) else {
+            return topLevelBookmarksFolder!.objectID
+        }
+        return parentID
+    }
+
     func idForFolderWithUUID(_ uuidString: String) async -> NSManagedObjectID? {
         guard let uuid = UUID(uuidString: uuidString) else { return nil }
 
@@ -161,7 +168,7 @@ extension BookmarksCoreDataStorage {
         }
     }
 
-    func bookmarkWithUUID(_ uuidString: String) async -> BookmarkManagedObject? {
+    func idForBookmarkWithUUID(_ uuidString: String) async -> NSManagedObjectID? {
         guard let uuid = UUID(uuidString: uuidString) else { return nil }
         
         return await withCheckedContinuation { continuation in
@@ -169,7 +176,7 @@ extension BookmarksCoreDataStorage {
                 let fetchRequest: NSFetchRequest<BookmarkManagedObject> = BookmarkManagedObject.fetchRequest()
                 fetchRequest.predicate = .matchingUUID(uuid)
                 let results = try? self.viewContext.fetch(fetchRequest)
-                continuation.resume(returning: results?.first)
+                continuation.resume(returning: results?.first?.objectID)
             }
         }
         
