@@ -20,6 +20,7 @@
 import Foundation
 import DDGSync
 import Core
+import CoreData
 
 class SyncPersistence: LocalDataPersisting {
     
@@ -40,7 +41,7 @@ class SyncPersistence: LocalDataPersisting {
                 await BookmarksManager().updateSavedSiteFolder(savedSiteFolder)
                 
             case .bookmarkDeleted(let id):
-                await BookmarksManager().deleteItemWithUUID(id)
+                BookmarksManager().deleteItemWithUUID(id)
                 
             }
         }
@@ -55,8 +56,6 @@ class SyncPersistence: LocalDataPersisting {
 
 extension DDGSync {
     
-    static let queue = DispatchQueue(label: "Sync Operations")
-    
     convenience init() {
         self.init(persistence: SyncPersistence())
     }
@@ -64,18 +63,20 @@ extension DDGSync {
 }
 
 extension DDGSyncing {
-    
-    func persistBookmark(_ bookmark: BookmarkManagedObject, fromBookmarksManager manager: BookmarksManager) {
+
+    func persistBookmarkWithId(_ id: NSManagedObjectID, fromBookmarksManager manager: BookmarksManager) {
         guard isAuthenticated else { return }
-        
-        Task {
-            guard let id = bookmark.uuid?.uuidString,
+
+        DispatchQueue.main.async {
+
+            guard let bookmark = manager.coreDataStorage.viewContext.object(with: id) as? BookmarkManagedObject,
+                  let id = bookmark.uuid?.uuidString,
                   let title = bookmark.title,
                   let url = bookmark.url?.absoluteString else { return }
-            
-            let nextItem = manager.nextItemUUIDForBookmark(bookmark)?.uuidString
-            let parent = bookmark.parent?.uuid
-            
+
+            let nextItem = nextItemUUIDForBookmark(bookmark)?.uuidString
+            let parent = bookmark.parent?.uuid == manager.topLevelBookmarksFolder?.uuid ? nil : bookmark.parent?.uuid
+
             let savedSite = SavedSiteItem(id: id,
                                           title: title,
                                           url: url,
@@ -83,37 +84,125 @@ extension DDGSyncing {
                                           nextFavorite: nil,
                                           nextItem: nextItem,
                                           parent: parent?.uuidString)
-            do {
-                try await sender()
-                    .persistingBookmark(savedSite)
-                    .send()
-            } catch {
-                // TODO: log this
-            }
-        }
-        
-     }
-    
-}
 
-extension BookmarksManager {
-    
-    func nextItemUUIDForBookmark(_ bookmark: BookmarkManagedObject) -> UUID? {
+            Task {
+                do {
+                    try await sender()
+                        .persistingBookmark(savedSite)
+                        .send()
+                } catch {
+                    // TODO: log this
+                }
+            }
+
+        }
+
+    }
+
+    private func nextItemUUIDForBookmark(_ bookmark: BookmarkManagedObject) -> UUID? {
         if let folder = bookmark.parent,
-           let index = folder.children?.index(of: bookmark) {
+           let index = folder.children?.index(of: bookmark),
+           let count = folder.children?.count,
+           count < index + 1 {
+
             let item = folder.children?.object(at: index + 1) as? BookmarkItemManagedObject
             return item?.uuid
         }
         return nil
     }
-    
+
+}
+
+extension BookmarksManager {
+
     func updateSavedSiteItem(_ item: SavedSiteItem) async {
+        if let bookmark = await coreDataStorage.bookmarkWithUUID(item.id) {
+
+            // TODO
+
+        } else {
+            guard let url = item.url.punycodedUrl else { return }
+
+            if item.isFavorite {
+                _ = try? await coreDataStorage.saveNewFavorite(withTitle: item.title, url: url)
+            } else {
+                var parentID: NSManagedObjectID?
+                if let parentUUID = item.parent {
+                    parentID = await coreDataStorage.idForFolderWithUUID(parentUUID)
+                }
+
+                _ = try? await coreDataStorage.saveNewBookmark(withTitle: item.title, url: url, parentID: parentID)
+            }
+        }
     }
     
     func updateSavedSiteFolder(_ folder: SavedSiteFolder) async {
+        // TODO update folder
     }
     
-    func deleteItemWithUUID(_ uuidString: String) async {
+    func deleteItemWithUUID(_ uuidString: String) {
+        coreDataStorage.deleteItemWithUUID(uuidString)
+    }
+
+}
+
+extension BookmarksCoreDataStorage {
+
+    func idForFolderWithUUID(_ uuidString: String) async -> NSManagedObjectID? {
+        guard let uuid = UUID(uuidString: uuidString) else { return nil }
+
+        return await withCheckedContinuation { continuation in
+            viewContext.perform {
+                let fetchRequest: NSFetchRequest<BookmarkFolderManagedObject> = BookmarkFolderManagedObject.fetchRequest()
+                fetchRequest.predicate = .matchingUUID(uuid)
+                let results = try? self.viewContext.fetch(fetchRequest)
+                continuation.resume(returning: results?.first?.objectID)
+            }
+        }
+    }
+
+    func bookmarkWithUUID(_ uuidString: String) async -> BookmarkManagedObject? {
+        guard let uuid = UUID(uuidString: uuidString) else { return nil }
+        
+        return await withCheckedContinuation { continuation in
+            viewContext.perform {
+                let fetchRequest: NSFetchRequest<BookmarkManagedObject> = BookmarkManagedObject.fetchRequest()
+                fetchRequest.predicate = .matchingUUID(uuid)
+                let results = try? self.viewContext.fetch(fetchRequest)
+                continuation.resume(returning: results?.first)
+            }
+        }
+        
+    }
+    
+    func deleteItemWithUUID(_ uuidString: String) {
+        guard let uuid = UUID(uuidString: uuidString) else { return }
+                
+        viewContext.perform {
+            self.deleteBookmarkWithUUID(uuid)
+            self.deleteFolderWithUUID(uuid)
+            try? self.viewContext.save()
+        }
+    }
+    
+    private func deleteFolderWithUUID(_ uuid: UUID) {
+        let fetchRequest: NSFetchRequest<BookmarkFolderManagedObject> = BookmarkFolderManagedObject.fetchRequest()
+        fetchRequest.predicate = .matchingUUID(uuid)
+        self.viewContext.deleteAll(matching: fetchRequest)
+    }
+
+    private func deleteBookmarkWithUUID(_ uuid: UUID) {
+        let fetchRequest: NSFetchRequest<BookmarkManagedObject> = BookmarkManagedObject.fetchRequest()
+        fetchRequest.predicate = .matchingUUID(uuid)
+        self.viewContext.deleteAll(matching: fetchRequest)
+    }
+    
+}
+
+extension NSPredicate {
+    
+    static func matchingUUID(_ uuid: UUID) -> NSPredicate {
+        return NSPredicate(format: "uuid == %@", uuid as NSUUID)
     }
     
 }

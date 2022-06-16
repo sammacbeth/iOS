@@ -82,6 +82,7 @@ class SyncModel: ObservableObject {
         
         Task {
             do {
+                try await allocateUUIDsToBookmarks()
                 try await sync.fetchLatest()
             } catch {
                 errorMessage = "\(error)"

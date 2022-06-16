@@ -35,8 +35,9 @@ public enum BookmarksCoreDataStorageError: Error {
 public typealias BookmarkItemSavedMainThreadCompletion = ((NSManagedObjectID?, BookmarksCoreDataStorageError?) -> Void)
 public typealias BookmarkExistsMainThreadCompletion = ((Bool) -> Void)
 
+
 public typealias BookmarkItemDeletedBackgroundThreadCompletion = ((Bool, BookmarksCoreDataStorageError?) -> Void)
-public typealias BookmarkItemUpdatedBackgroundThreadCompletion = ((BookmarkItemManagedObject?, BookmarksCoreDataStorageError?) -> Void)
+public typealias BookmarkItemUpdatedBackgroundThreadCompletion = ((NSManagedObjectID?, BookmarksCoreDataStorageError?) -> Void)
 public typealias BookmarkItemIndexUpdatedBackgroundThreadCompletion = ((Bool, BookmarksCoreDataStorageError?) -> Void)
 public typealias BookmarkConvertedBackgroundThreadCompletion = ((Bool, BookmarksCoreDataStorageError?) -> Void)
 
@@ -51,7 +52,7 @@ public class BookmarksCoreDataStorage {
     private let storeLoadedCondition = RunLoop.ResumeCondition()
     internal var persistentContainer: NSPersistentContainer
     
-    internal lazy var viewContext: NSManagedObjectContext = {
+    public lazy var viewContext: NSManagedObjectContext = {
         RunLoop.current.run(until: storeLoadedCondition)
         let context = persistentContainer.viewContext
         context.mergePolicy = NSMergePolicy(merge: .rollbackMergePolicyType)
@@ -59,7 +60,7 @@ public class BookmarksCoreDataStorage {
         return context
     }()
     
-    internal func getTemporaryPrivateContext() -> NSManagedObjectContext {
+    public func getTemporaryPrivateContext() -> NSManagedObjectContext {
         RunLoop.current.run(until: storeLoadedCondition)
         let context = persistentContainer.newBackgroundContext()
         context.mergePolicy = NSMergePolicy(merge: .mergeByPropertyObjectTrumpMergePolicyType)
@@ -366,7 +367,7 @@ extension BookmarksCoreDataStorage {
                 completion?(nil, .contextSaveError)
                 return
             }
-            completion?(folder, nil)
+            completion?(folderID, nil)
         }
     }
     
@@ -395,7 +396,7 @@ extension BookmarksCoreDataStorage {
                 completion?(nil, .contextSaveError)
                 return
             }
-            completion?(favorite, nil)
+            completion?(favoriteID, nil)
         }
     }
     
@@ -436,7 +437,8 @@ extension BookmarksCoreDataStorage {
                 completion?(nil, .contextSaveError)
                 return
             }
-            completion?(bookmark, nil)
+            
+            completion?(bookmarkID, nil)
         }
     }
         
@@ -773,7 +775,8 @@ extension BookmarksCoreDataStorage {
             fetchRequest.predicate = NSPredicate(format: "%K == nil AND %K == false",
                                                  #keyPath(BookmarkManagedObject.parent),
                                                  #keyPath(BookmarkManagedObject.isFavorite))
-            
+            fetchRequest.returnsObjectsAsFaults = false
+
             let results = try? viewContext.fetch(fetchRequest)
             guard (results?.count ?? 0) <= 1 else {
                 fatalError("There shouldn't be an orphaned folder")
@@ -917,8 +920,8 @@ extension BookmarksCoreDataStorage {
             let context = getTemporaryPrivateContext()
             context.perform {
                 let request = BookmarkItemManagedObject.fetchRequest()
-                request.predicate = NSPredicate(format: "uuid is nil")
-                if let results = try? self.viewContext.fetch(request) {
+                request.predicate = NSPredicate(format: "uuid = nil")
+                if let results = try? context.fetch(request) {
                     results.forEach {
                         $0.uuid = UUID()
                     }

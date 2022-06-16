@@ -44,7 +44,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var overlayWindow: UIWindow?
     var window: UIWindow?
 
-    private lazy var bookmarkStore: BookmarkStore = BookmarkUserDefaults()
     private lazy var privacyStore = PrivacyUserDefaults()
     private var autoClear: AutoClear?
     private var showKeyboardIfSettingOn = true
@@ -74,7 +73,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             _ = DefaultUserAgentManager.shared
             Database.shared.loadStore { _ in }
             BookmarksCoreDataStorage.shared.loadStoreAndCaches { context in
-                _ = BookmarksCoreDataStorageMigration.migrate(fromBookmarkStore: self.bookmarkStore, context: context)
+                _ = BookmarksCoreDataStorageMigration.migrate(fromBookmarkStore: BookmarkUserDefaults(), context: context)
             }
             window?.rootViewController = UIStoryboard.init(name: "LaunchScreen", bundle: nil).instantiateInitialViewController()
             return true
@@ -91,7 +90,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         BookmarksCoreDataStorage.shared.loadStoreAndCaches { context in
-            if BookmarksCoreDataStorageMigration.migrate(fromBookmarkStore: self.bookmarkStore, context: context) {
+            if BookmarksCoreDataStorageMigration.migrate(fromBookmarkStore: BookmarkUserDefaults(), context: context) {
                 if #available(iOS 14, *) {
                     WidgetCenter.shared.reloadAllTimelines()
                 }

@@ -109,7 +109,17 @@ class BookmarksManager {
     }
     
     func saveNewBookmark(withTitle title: String, url: URL, parentID: NSManagedObjectID?, completion: BookmarkItemSavedMainThreadCompletion? = nil) {
-        coreDataStorage.saveNewBookmark(withTitle: title, url: url, parentID: parentID, completion: completion)
+
+        var id: NSManagedObjectID?
+        coreDataStorage.saveNewBookmark(withTitle: title, url: url, parentID: parentID) { storedId, error in
+            defer { completion?(storedId, error) }
+            id = storedId
+        }
+
+        if let id = id {
+            self.sync.persistBookmarkWithId(id, fromBookmarksManager: self)
+        }
+
         Favicons.shared.loadFavicon(forDomain: url.host, intoCache: .bookmarks, fromCache: .tabs)
         if parentID != nil {
             Pixel.fire(pixel: .bookmarkCreatedInSubfolder)
@@ -143,12 +153,9 @@ class BookmarksManager {
         coreDataStorage.update(bookmarkID: bookmark.objectID,
                                newTitle: newTitle,
                                newURL: newURL,
-                               newParentID: newParentID) { item, error in
-
-            guard error == nil else { return }
-            guard let bookmark = item as? BookmarkManagedObject else { return }
-            self.sync.persistBookmark(bookmark, fromBookmarksManager: self)
-            
+                               newParentID: newParentID) { id, error in
+            self.sync.persistBookmarkWithId(bookmark.objectID, fromBookmarksManager: self)
+            completion?(id, error)
         }
         
         updateFaviconIfNeeded(bookmark, newURL)
@@ -205,7 +212,6 @@ class BookmarksManager {
         coreDataStorage.allBookmarksAndFavoritesFlat { bookmarks in
             let matchesDomain: ((Bookmark) -> Bool) = { $0.url?.host == domain }
             if !bookmarks.contains(where: matchesDomain) {
-                print("culprit?")
                 Favicons.shared.removeBookmarkFavicon(forDomain: domain)
             }
         }
