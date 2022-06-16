@@ -86,7 +86,7 @@ struct SyncView: View {
 
                 Button("Connect") {
                     model.connectWithRecoveryCode(pastedRecoveryCode)
-                }.disabled(model.isBusy)
+                }.disabled(model.isBusy || pastedRecoveryCode.isEmpty)
 
 //                Button("Scan Code") {
 //                    model.startScanning()
