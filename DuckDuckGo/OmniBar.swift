@@ -529,6 +529,7 @@ extension OmniBar: Themable {
         
         privacyInfoContainer.maskingView.backgroundColor = theme.searchBarBackgroundColor
         privacyInfoContainer.decorate(with: theme)
+        privacyIconAndTrackersAnimator.resetImageProvider()
         
         searchStackContainer?.tintColor = theme.barTintColor
         
