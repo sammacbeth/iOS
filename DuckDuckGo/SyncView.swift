@@ -75,7 +75,7 @@ struct SyncView: View {
                 Button("Create account") {
                     model.createAccount()
                 }
-                .disabled(model.isBusy)
+                .disabled(model.isBusy || !pastedRecoveryCode.isEmpty)
                         
 //                CodeScannerView(isScanning: $model.isScanning,
 //                                scannedCode: $model.scannedCode)
@@ -99,9 +99,15 @@ struct SyncView: View {
             }.visibility(model.isAuthenticated ? .gone : .visible)
                 
         }.sheet(isPresented: $model.showErrorMessage) {
-            Text(model.errorMessage)
-                .font(.caption)
-                .foregroundColor(.red)
+            VStack(spacing: 20) {
+                Text(model.errorMessage)
+                    .font(.caption)
+                    .foregroundColor(.red)
+
+                Button("OK") {
+                    model.showErrorMessage = false
+                }
+            }
         }
     }
     
