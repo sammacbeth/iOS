@@ -6883,7 +6883,7 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = xyz.brindy.ddgios3.AutofillCredentialProvider2;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(APP_ID).AutofillCredentialProvider2";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
@@ -6918,7 +6918,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = xyz.brindy.ddgios3.AutofillCredentialProvider2;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(APP_ID).AutofillCredentialProvider2";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
