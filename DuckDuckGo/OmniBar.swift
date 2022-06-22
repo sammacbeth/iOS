@@ -214,7 +214,7 @@ class OmniBar: UIView {
     }
     
     public func startTrackersAnimation(_ siteRating: SiteRating, collapsing: Bool) {
-        guard !privacyInfoContainer.isAnimationPlaying
+        guard state.allowsTrackersAnimation, !privacyInfoContainer.isAnimationPlaying
         else {
             print("trying to start animation while its running!")
             return
@@ -419,6 +419,7 @@ class OmniBar: UIView {
 
     @IBAction func onTrackersViewPressed(_ sender: Any) {
         trackersAnimator.cancelAnimations(in: self)
+        privacyIconAndTrackersAnimator.cancelAnimations(in: self)
         textField.becomeFirstResponder()
     }
 
@@ -433,6 +434,7 @@ class OmniBar: UIView {
     @IBAction func onRefreshPressed(_ sender: Any) {
         Pixel.fire(pixel: .refreshPressed)
         trackersAnimator.cancelAnimations(in: self)
+        privacyIconAndTrackersAnimator.cancelAnimations(in: self)
         omniDelegate?.onRefreshPressed()
     }
     
