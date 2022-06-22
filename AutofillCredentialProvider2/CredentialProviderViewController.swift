@@ -57,6 +57,9 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
         os_log(.info, #function)
         label2?.text = #function
 
+
+
+        
         do {
             guard credentialIdentity.serviceIdentifier.type == .domain,
                   let recordId = credentialIdentity.recordIdentifier,
