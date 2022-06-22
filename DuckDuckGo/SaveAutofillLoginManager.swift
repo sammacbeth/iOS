@@ -19,6 +19,7 @@
 
 import Foundation
 import BrowserServicesKit
+import AuthenticationServices
 
 protocol SaveAutofillLoginManagerProtocol {
     
@@ -137,7 +138,18 @@ final class SaveAutofillLoginManager: SaveAutofillLoginManagerProtocol {
     
     static func saveCredentials(_ credentials: SecureVaultModels.WebsiteCredentials, with factory: SecureVaultFactory) throws -> Int64 {
         do {
-            return try SecureVaultFactory.default.makeVault(errorReporter: SecureVaultErrorReporter.shared).storeWebsiteCredentials(credentials)
+            let id = try SecureVaultFactory.default.makeVault(errorReporter: SecureVaultErrorReporter.shared).storeWebsiteCredentials(credentials)
+
+            Task {
+                let state = await ASCredentialIdentityStore.shared.state()
+                guard state.isEnabled else { return }
+                try await ASCredentialIdentityStore.shared.saveCredentialIdentities([
+                    .init(serviceIdentifier: .init(identifier: credentials.account.domain, type: .domain),
+                          user: credentials.account.username, recordIdentifier: "\(id)")
+                ])
+            }
+            
+            return id
         } catch {
             throw error
         }

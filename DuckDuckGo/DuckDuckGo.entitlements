@@ -6,6 +6,7 @@
 	<true/>
 	<key>com.apple.security.application-groups</key>
 	<array>
+		<string>$(GROUP_ID_PREFIX).vault</string>
 		<string>$(GROUP_ID_PREFIX).bookmarks</string>
 		<string>$(GROUP_ID_PREFIX).contentblocker</string>
 		<string>$(GROUP_ID_PREFIX).statistics</string>
