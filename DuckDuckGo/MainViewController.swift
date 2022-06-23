@@ -545,10 +545,6 @@ class MainViewController: UIViewController {
         Pixel.fire(pixel: .tabBarForwardPressed)
         currentTab?.goForward()
     }
-
-    public var siteRating: SiteRating? {
-        return currentTab?.siteRating
-    }
     
     func didReturnFromBackground() {
         skipSERPFlow = true
@@ -701,13 +697,8 @@ class MainViewController: UIViewController {
         }
 
         omniBar.refreshText(forUrl: tab.url)
-//        updateSiteRating(tab.siteRating) //
-//        omniBar.updatePrivacyIcon(for: tab.url)
+        omniBar.resetPrivacyIcon(for: tab.url)
         omniBar.startBrowsing()
-    }
-    
-    private func updateSiteRating(_ siteRating: SiteRating?) {
-        omniBar.updateSiteRating(siteRating, with: ContentBlocking.privacyConfigurationManager.privacyConfig)
     }
 
     func dismissOmniBar() {
@@ -1415,7 +1406,7 @@ extension MainViewController: TabDelegate {
 
     func tab(_ tab: TabViewController, didChangeSiteRating siteRating: SiteRating?) {
         if currentTab == tab {
-            updateSiteRating(siteRating)
+            omniBar.updatePrivacyIcon(siteRating, with: ContentBlocking.privacyConfigurationManager.privacyConfig)
         }
     }
 
@@ -1478,7 +1469,6 @@ extension MainViewController: TabDelegate {
              didRequestPresentingTrackerAnimation siteRating: SiteRating,
              isCollapsing: Bool) {
         guard tabManager.current === tab else { return }
-//        omniBar?.startTrackersAnimation(Array(siteRating.trackersBlocked), collapsing: isCollapsing)
         omniBar?.startTrackersAnimation(siteRating, collapsing: isCollapsing)
     }
     
