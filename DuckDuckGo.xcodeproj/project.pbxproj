@@ -4949,11 +4949,8 @@
 				984D035824ACCC6F0066CFB8 /* TabViewListCell.swift in Sources */,
 				AA3D854923DA1DFB00788410 /* AppIcon.swift in Sources */,
 				8590CB612684D0600089F6BF /* CookieDebugViewController.swift in Sources */,
-<<<<<<< HEAD
 				85B52B9E2857CE560089AEB4 /* SyncView.swift in Sources */,
-=======
 				319A37152829A55F0079FBCE /* AutofillListItemTableViewCell.swift in Sources */,
->>>>>>> develop
 				4B6484EB27FD1E350050A7A1 /* NotificationService.swift in Sources */,
 				83134D7D20E2D725006CE65D /* FeedbackSender.swift in Sources */,
 				314C92BA27C3E7CB0042EC96 /* QuickLookContainerViewController.swift in Sources */,
@@ -5113,11 +5110,8 @@
 				312E5746283BB04A00C18FA0 /* AutofillEmptySearchView.swift in Sources */,
 				F1A5683A1E70F98E0081082E /* AutocompleteRequest.swift in Sources */,
 				8565A34B1FC8D96B00239327 /* LaunchTabNotification.swift in Sources */,
-<<<<<<< HEAD
 				85B52B9C2857CC450089AEB4 /* SyncViewController.swift in Sources */,
-=======
 				311BD1AD2836BB3900AEF6C1 /* AutofillItemsEmptyView.swift in Sources */,
->>>>>>> develop
 				316931D727BD10BB0095F5ED /* SaveToDownloadsAlert.swift in Sources */,
 				31C70B5B2804C61000FB6AD1 /* SaveAutofillLoginManager.swift in Sources */,
 				85449EFD23FDA71F00512AAF /* KeyboardSettings.swift in Sources */,
