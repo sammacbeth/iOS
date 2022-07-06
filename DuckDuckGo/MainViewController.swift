@@ -335,19 +335,20 @@ class MainViewController: UIViewController {
             return
         }
 
-        if segue.destination.children.count > 0,
-            let controller = segue.destination.children[0] as? BookmarksViewController {
-            controller.delegate = self
-            
-            if segue.identifier == "BookmarksEditCurrent",
-               let link = currentTab?.link {
-                controller.openEditFormWhenPresented(link: link)
-            } else if segue.identifier == "BookmarksEdit",
-                        let bookmark = sender as? Bookmark {
-                controller.openEditFormWhenPresented(bookmark: bookmark)
-            }
-            return
-        }
+//        if segue.destination.children.count > 0,
+//            let controller = segue.destination.children[0] as? BookmarksViewController {
+// TODO
+//            controller.delegate = self
+//
+//            if segue.identifier == "BookmarksEditCurrent",
+//               let link = currentTab?.link {
+//                controller.openEditFormWhenPresented(link: link)
+//            } else if segue.identifier == "BookmarksEdit",
+//                        let bookmark = sender as? Bookmark {
+//                controller.openEditFormWhenPresented(bookmark: bookmark)
+//            }
+//            return
+//        }
 
         if let controller = segue.destination as? TabSwitcherViewController {
             controller.transitioningDelegate = tabSwitcherTransition
@@ -1149,7 +1150,10 @@ extension MainViewController: OmniBarDelegate {
             ViewHighlighter.hideAll()
         }
         hideSuggestionTray()
-        performSegue(withIdentifier: "Bookmarks", sender: self)
+        // performSegue(withIdentifier: "Bookmarks", sender: self)
+        present(BookmarksViewController(), animated: true) {
+            print("***", #function, "complete")
+        }
     }
     
     func onBookmarkEdit() {
