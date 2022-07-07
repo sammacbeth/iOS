@@ -46,7 +46,8 @@ public extension Color {
     static let blue10 = Color.init(0xADC2FC)
     static let blue0 = Color.init(0xADC2FC)
     
-    static let black = Color.init(0x000000)
+    // Black is already defined (and is correct) 
+
     static let gray95 = Color.init(0x111111)
     static let gray90 = Color.init(0x222222)
     static let gray85 = Color.init(0x333333)
@@ -61,7 +62,8 @@ public extension Color {
     static let gray20 = Color.init(0xEEEEEE)
     static let gray10 = Color.init(0xF5F5F5)
     static let gray0 = Color.init(0xFAFAFA)
-    static let white = Color.init(0xFFFFFF)
+
+    // White is already defined (and is correct)
 
     static let deprecatedBlue =  Color.init(0x678FFF)
 }

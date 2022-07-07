@@ -1,0 +1,57 @@
+//
+//  BookmarksManagerViewModel.swift
+//
+//  Copyright © 2022 DuckDuckGo. All rights reserved.
+//
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
+//
+//  http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License.
+//
+
+import Foundation
+
+struct SavedSiteItemWrapper: Identifiable, Hashable {
+
+    static func == (lhs: SavedSiteItemWrapper, rhs: SavedSiteItemWrapper) -> Bool {
+        return lhs.id == rhs.id
+    }
+
+    let id: UUID
+    let item: SavedSiteItem
+
+    func hash(into hasher: inout Hasher) {
+        id.hash(into: &hasher)
+    }
+}
+
+enum SavedSiteItem {
+
+    case bookmark(title: String, url: String, isFavorite: Bool)
+    case folder(childrenCount: Int)
+    case navigateUp
+
+}
+
+public class BookmarksManagerViewModel: ObservableObject {
+
+    @Published var listViewModel = BookmarksListViewModel()
+
+    public init() { }
+
+    func delete(_ item: SavedSiteItemWrapper) {
+        print("***", #function, item)
+    }
+
+    func toggleFavorite(_ item: SavedSiteItemWrapper) {
+        print("***", #function, item)
+    }
+
+}
