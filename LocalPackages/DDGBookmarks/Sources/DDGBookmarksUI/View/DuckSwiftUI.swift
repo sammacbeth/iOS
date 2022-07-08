@@ -76,3 +76,9 @@ extension View {
     }
 
 }
+
+extension Color {
+
+    static let listTextColor = Color("ListTextColor", bundle: Bundle.module)
+
+}

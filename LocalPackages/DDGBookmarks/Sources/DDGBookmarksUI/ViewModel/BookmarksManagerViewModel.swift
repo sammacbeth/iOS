@@ -25,7 +25,9 @@ struct SavedSiteItemWrapper: Identifiable, Hashable {
     }
 
     let id: UUID
-    let item: SavedSiteItem
+    let name: String
+    let url: String?
+    let children: [SavedSiteItemWrapper]?
 
     func hash(into hasher: inout Hasher) {
         id.hash(into: &hasher)

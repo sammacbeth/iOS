@@ -20,53 +20,36 @@ import Foundation
 
 class BookmarksListViewModel: ObservableObject {
 
-    static let dummyData = [
-        SavedSiteItemWrapper(id: UUID(), item: .bookmark(title: "Title", url: "URL", isFavorite: false)),
-        SavedSiteItemWrapper(id: UUID(), item: .bookmark(title: "Title", url: "URL", isFavorite: false)),
-        SavedSiteItemWrapper(id: UUID(), item: .folder(childrenCount: 4)),
-        SavedSiteItemWrapper(id: UUID(), item: .bookmark(title: "Title", url: "URL", isFavorite: false))
-    ]
+    @Published var items: [SavedSiteItemWrapper]
+    @Published var canImportExport = true
 
-    static let dummyData2 = [
-        SavedSiteItemWrapper(id: UUID(), item: .bookmark(title: "Title", url: "URL", isFavorite: false)),
-        SavedSiteItemWrapper(id: UUID(), item: .bookmark(title: "Title", url: "URL", isFavorite: false)),
-        SavedSiteItemWrapper(id: UUID(), item: .folder(childrenCount: 0)),
-        SavedSiteItemWrapper(id: UUID(), item: .bookmark(title: "Title", url: "URL", isFavorite: false))
-    ]
-
-    @Published var items: [SavedSiteItemWrapper] = BookmarksListViewModel.dummyData
-
-    func select(_ item: SavedSiteItemWrapper, isEditing: Bool) {
-
-        print("***", #function, item, isEditing)
-
-        switch item.item {
-        case .folder:
-            openFolderWithId(item.id)
-
-        case .navigateUp:
-            navigateUp()
-
-        case .bookmark:
-            openBookmarkWithId(item.id, isEditing: true)
-
-        }
-
-    }
-
-    private func navigateUp() {
-        guard !items.isEmpty,
-              case .navigateUp = items[0].item else { return }
-        items = Self.dummyData
-    }
-
-    private func openFolderWithId(_ id: UUID) {
+    init() {
         items = [
-            .init(id: UUID(), item: .navigateUp)
-        ] + Self.dummyData2
+           SavedSiteItemWrapper(id: UUID(), name: "Name 1", url: "url", children: nil),
+           SavedSiteItemWrapper(id: UUID(), name: "Name 2", url: "url", children: nil),
+           SavedSiteItemWrapper(id: UUID(), name: "Name 3", url: "url", children: nil),
+           SavedSiteItemWrapper(id: UUID(), name: "Folder 4", url: "url", children: [
+               SavedSiteItemWrapper(id: UUID(), name: "Folder 4.1", url: "url", children: [
+                   SavedSiteItemWrapper(id: UUID(), name: "Name 4.1.1", url: "url", children: nil),
+                   SavedSiteItemWrapper(id: UUID(), name: "Name 4.1.2", url: "url", children: nil),
+                   SavedSiteItemWrapper(id: UUID(), name: "Name 4.1.3", url: "url", children: nil)
+               ]),
+               SavedSiteItemWrapper(id: UUID(), name: "Name 4.2", url: "url", children: nil),
+               SavedSiteItemWrapper(id: UUID(), name: "Name 4.3", url: "url", children: nil),
+               SavedSiteItemWrapper(id: UUID(), name: "Name 4.4", url: "url", children: [
+                   SavedSiteItemWrapper(id: UUID(), name: "Name 4.4.1", url: "url", children: nil),
+                   SavedSiteItemWrapper(id: UUID(), name: "Name 4.4.2", url: "url", children: nil),
+                   SavedSiteItemWrapper(id: UUID(), name: "Name 4.4.3", url: "url", children: nil)
+               ]),
+               SavedSiteItemWrapper(id: UUID(), name: "Name 4.5", url: "url", children: nil)
+           ])
+       ]
     }
 
-    private func openBookmarkWithId(_ id: UUID, isEditing: Bool) {
+    init(items: [SavedSiteItemWrapper], canImportExport: Bool = true) {
+        print("*** init", items.count, items[0].id)
+        self.items = items
+        self.canImportExport = canImportExport
     }
 
 }
