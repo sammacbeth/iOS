@@ -20,7 +20,22 @@ import Foundation
 
 public class BookmarksManagerViewModel: ObservableObject {
 
-    @Published var listViewModel = BookmarksListViewModel()
+    @Published var listViewModel = BookmarksListViewModel(items: [
+
+        .bookmark(title: "Twitter", url: "https://www.twitter.com"),
+        .folder(name: "TV", children: [
+            .bookmark(title: "Netflix", url: "https://netflix.com"),
+            .bookmark(title: "Amazon Prime", url: "https://prime.amazon.com"),
+            .folder(name: "IMDB", children: [
+                .bookmark(title: "Stranger Things", url: "https://www.imdb.com/title/tt4574334/?ref_=fn_al_tt_1"),
+                .bookmark(title: "For All Mankind", url: "https://www.imdb.com/title/tt7772588/?ref_=fn_al_tt_1")
+            ])
+        ]),
+        .folder(name: "Music", children: [
+            .bookmark(title: "Apple Music", url: "https://music.apple.com"),
+            .bookmark(title: "Spotify", url: "https://spotify.com")
+        ])
+    ])
 
     public init() { }
 

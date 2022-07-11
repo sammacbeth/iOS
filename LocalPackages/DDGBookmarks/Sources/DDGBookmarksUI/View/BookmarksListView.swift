@@ -139,10 +139,19 @@ struct BookmarksListView: View {
                     }
                     .frame(maxWidth: .infinity)
 
+                    // SwiftUI EditButton uses an animation which makes the UI go screwy
                     HStack {
                         Spacer()
 
-                        EditButton()
+                        Button("Edit") {
+                            print("*** Edit")
+                            editMode?.wrappedValue = .active
+                        }.visibility(editMode?.wrappedValue == .inactive ? .visible : .gone)
+
+                        Button("Done") {
+                            print("*** Done")
+                            editMode?.wrappedValue = .inactive
+                        }.visibility(editMode?.wrappedValue == .active ? .visible : .gone)
 
                         Spacer()
                             .visibility(isEditing ? .gone : .visible)
@@ -154,15 +163,20 @@ struct BookmarksListView: View {
 
                         Menu {
                             Button {
-                                print("*** Import")
-                            } label: {
-                                Text("Import")
-                            }
-                            Button {
                                 print("*** Export")
                             } label: {
-                                Text("Export")
+                                Label("Export HTML File", systemImage: "arrow.backward.to.line")
                             }
+
+                            Button {
+                                print("*** Import")
+                            } label: {
+                                Label("Import HTML File", systemImage: "arrow.forward.to.line")
+                            }
+
+                            Text("Import an HTML file of bookmarks from another browser, or export your existing bookmarks.")
+                                .font(.largeTitle)
+
                         } label: {
                             Text("More")
                         }.visibility(model.canImportExport ? .visible : .invisible)
@@ -175,6 +189,7 @@ struct BookmarksListView: View {
     }
 
 }
+
 struct FolderCellView: View {
 
     let folder: SavedSiteModel.Folder
@@ -183,26 +198,37 @@ struct FolderCellView: View {
     let onToggleFavorite: (SavedSiteModel) -> Void
     let edit: () -> Void
 
+    @State var listModel = BookmarksListViewModel(items: [], canImportExport: false)
+
+    @State var selection: String?
+
     var body: some View {
 
         let cell = HStack {
             Image(systemName: "folder") // TODO use correct image
             Text(folder.name)
+            Spacer()
+            Text("\(folder.children.count)") // TODO apply style
         }
 
         if isEditing {
             cell
                 .modifier(DisclosureModifier())
-                .onTapGesture {
-                    edit()
-                }
+                .onTapGesture(perform: edit)
         } else {
             NavigationLink {
-                BookmarksListView(model: .init(items: folder.children), onDelete: onDelete, onToggleFavorite: onToggleFavorite)
+                BookmarksListView(model: listModel,
+                                  onDelete: onDelete,
+                                  onToggleFavorite: onToggleFavorite)
+                .onAppear {
+                    listModel.items = folder.children // TODO load from model
+                }
             } label: {
                 cell
             }
+            .isDetailLink(false)
         }
+
     }
 
 }

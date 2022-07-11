@@ -20,39 +20,30 @@ import Foundation
 
 class BookmarksListViewModel: ObservableObject {
 
+    let id = UUID()
+
     @Published var items: [SavedSiteModel]
     @Published var canImportExport = true
     @Published var editingItem: SavedSiteModel?
-    @Published var showingEditor = false
-
-    init() {
-        items = [
-
-            .bookmark(title: "Twitter", url: "https://www.twitter.com"),
-            .folder(name: "TV", children: [
-                .bookmark(title: "Netflix", url: "https://netflix.com"),
-                .bookmark(title: "Amazon Prime", url: "https://prime.amazon.com"),
-                .folder(name: "IMDB", children: [
-                    .bookmark(title: "Stranger Things", url: "https://www.imdb.com/title/tt4574334/?ref_=fn_al_tt_1"),
-                    .bookmark(title: "For All Mankind", url: "https://www.imdb.com/title/tt7772588/?ref_=fn_al_tt_1")
-                ])
-            ]),
-            .folder(name: "Music", children: [
-                .bookmark(title: "Apple Music", url: "https://music.apple.com"),
-                .bookmark(title: "Spotify", url: "https://spotify.com")
-            ])
-       ]
+    @Published var showingEditor = false {
+        didSet {
+            print("***", id, Self.self, #function, showingEditor)
+        }
     }
 
     init(items: [SavedSiteModel], canImportExport: Bool = true) {
-        print("*** init", items.count, items[0].id)
         self.items = items
         self.canImportExport = canImportExport
+        print("***", id, Self.self, #function)
     }
 
     func edit(_ item: SavedSiteModel) {
         editingItem = item
         showingEditor = true
+    }
+
+    deinit {
+        print("***", id, Self.self, #function)
     }
 
 }
