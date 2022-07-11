@@ -87,6 +87,11 @@ struct BookmarksListView: View {
         return false
     }
 
+    func editItem(_ item: SavedSiteModel) {
+        editMode?.wrappedValue = .inactive
+        model.edit(item)
+    }
+
     var body: some View {
 
         List {
@@ -100,7 +105,7 @@ struct BookmarksListView: View {
                         BookmarkCellView(bookmark: bookmark, isEditing: isEditing) {
                             print("*** Bookmark tapped")
                         } edit: {
-                            model.edit(item)
+                            editItem(item)
                         }
                         .modifier(SwipeToFavoriteModifier(isFavorite: bookmark.isFavorite, action: {
                             print("*** swipe to favorite")
@@ -112,7 +117,7 @@ struct BookmarksListView: View {
                     } else if let folder = item.folder {
 
                         FolderCellView(folder: folder, isEditing: isEditing, onDelete: onDelete, onToggleFavorite: onToggleFavorite) {
-                            model.edit(item)
+                            editItem(item)
                         }
                         .modifier(SwipeToDeleteModifier(action: {
                             print("*** swipe to delete")
@@ -202,97 +207,6 @@ struct BookmarksListView: View {
                 }
             } // ToolbarItem
         }
-    }
-
-}
-
-struct FolderCellView: View {
-
-    @EnvironmentObject var model: BookmarksManagerViewModel
-
-    let folder: SavedSiteModel.Folder
-    let isEditing: Bool
-    let onDelete: (SavedSiteModel) -> Void
-    let onToggleFavorite: (SavedSiteModel) -> Void
-    let edit: () -> Void
-
-    @State var listModel = BookmarksListViewModel(items: [], canImportExport: false)
-
-    @State var selection: String?
-
-    var body: some View {
-
-        let cell = HStack {
-            Image(systemName: "folder") // TODO use correct image
-            Text(folder.name)
-            Spacer()
-            Text("\(folder.childrenCount)") // TODO apply style
-        }
-
-        if isEditing {
-            cell
-                .modifier(DisclosureModifier())
-                .onTapGesture(perform: edit)
-        } else {
-            NavigationLink {
-                BookmarksListView(model: listModel,
-                                  title: folder.name,
-                                  onDelete: onDelete,
-                                  onToggleFavorite: onToggleFavorite)
-                .onAppear {
-                    listModel.items = model.childrenForFolderWithUUID(folder.id) ?? []
-                }
-            } label: {
-                cell
-            }
-            .isDetailLink(false)
-        }
-
-    }
-
-}
-
-struct BookmarkCellView: View {
-
-    let bookmark: SavedSiteModel.Bookmark
-    let isEditing: Bool
-    let action: () -> Void
-    let edit: () -> Void
-
-    var body: some View {
-
-        let cell = HStack {
-            FaviconView(domain: bookmark.domain)
-            Text(bookmark.title)
-        }
-
-        if isEditing {
-            cell
-                .modifier(DisclosureModifier())
-                .onTapGesture {
-                    edit()
-                }
-        } else {
-            Button {
-                action()
-            } label: {
-                cell
-            }
-        }
-    }
-
-}
-
-struct DisclosureModifier: ViewModifier {
-
-    func body(content: Content) -> some View {
-        HStack {
-            content
-            Spacer()
-            Image(systemName: "chevron.right")
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
-        .contentShape(Rectangle())
     }
 
 }
