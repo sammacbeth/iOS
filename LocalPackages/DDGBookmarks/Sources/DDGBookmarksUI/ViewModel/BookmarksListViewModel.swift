@@ -20,36 +20,39 @@ import Foundation
 
 class BookmarksListViewModel: ObservableObject {
 
-    @Published var items: [SavedSiteItemWrapper]
+    @Published var items: [SavedSiteModel]
     @Published var canImportExport = true
+    @Published var editingItem: SavedSiteModel?
+    @Published var showingEditor = false
 
     init() {
         items = [
-           SavedSiteItemWrapper(id: UUID(), name: "Name 1", url: "url", children: nil),
-           SavedSiteItemWrapper(id: UUID(), name: "Name 2", url: "url", children: nil),
-           SavedSiteItemWrapper(id: UUID(), name: "Name 3", url: "url", children: nil),
-           SavedSiteItemWrapper(id: UUID(), name: "Folder 4", url: "url", children: [
-               SavedSiteItemWrapper(id: UUID(), name: "Folder 4.1", url: "url", children: [
-                   SavedSiteItemWrapper(id: UUID(), name: "Name 4.1.1", url: "url", children: nil),
-                   SavedSiteItemWrapper(id: UUID(), name: "Name 4.1.2", url: "url", children: nil),
-                   SavedSiteItemWrapper(id: UUID(), name: "Name 4.1.3", url: "url", children: nil)
-               ]),
-               SavedSiteItemWrapper(id: UUID(), name: "Name 4.2", url: "url", children: nil),
-               SavedSiteItemWrapper(id: UUID(), name: "Name 4.3", url: "url", children: nil),
-               SavedSiteItemWrapper(id: UUID(), name: "Name 4.4", url: "url", children: [
-                   SavedSiteItemWrapper(id: UUID(), name: "Name 4.4.1", url: "url", children: nil),
-                   SavedSiteItemWrapper(id: UUID(), name: "Name 4.4.2", url: "url", children: nil),
-                   SavedSiteItemWrapper(id: UUID(), name: "Name 4.4.3", url: "url", children: nil)
-               ]),
-               SavedSiteItemWrapper(id: UUID(), name: "Name 4.5", url: "url", children: nil)
-           ])
+
+            .bookmark(title: "Twitter", url: "https://www.twitter.com"),
+            .folder(name: "TV", children: [
+                .bookmark(title: "Netflix", url: "https://netflix.com"),
+                .bookmark(title: "Amazon Prime", url: "https://prime.amazon.com"),
+                .folder(name: "IMDB", children: [
+                    .bookmark(title: "Stranger Things", url: "https://www.imdb.com/title/tt4574334/?ref_=fn_al_tt_1"),
+                    .bookmark(title: "For All Mankind", url: "https://www.imdb.com/title/tt7772588/?ref_=fn_al_tt_1")
+                ])
+            ]),
+            .folder(name: "Music", children: [
+                .bookmark(title: "Apple Music", url: "https://music.apple.com"),
+                .bookmark(title: "Spotify", url: "https://spotify.com")
+            ])
        ]
     }
 
-    init(items: [SavedSiteItemWrapper], canImportExport: Bool = true) {
+    init(items: [SavedSiteModel], canImportExport: Bool = true) {
         print("*** init", items.count, items[0].id)
         self.items = items
         self.canImportExport = canImportExport
+    }
+
+    func edit(_ item: SavedSiteModel) {
+        editingItem = item
+        showingEditor = true
     }
 
 }

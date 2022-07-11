@@ -18,42 +18,18 @@
 
 import Foundation
 
-struct SavedSiteItemWrapper: Identifiable, Hashable {
-
-    static func == (lhs: SavedSiteItemWrapper, rhs: SavedSiteItemWrapper) -> Bool {
-        return lhs.id == rhs.id
-    }
-
-    let id: UUID
-    let name: String
-    let url: String?
-    let children: [SavedSiteItemWrapper]?
-
-    func hash(into hasher: inout Hasher) {
-        id.hash(into: &hasher)
-    }
-}
-
-enum SavedSiteItem {
-
-    case bookmark(title: String, url: String, isFavorite: Bool)
-    case folder(childrenCount: Int)
-    case navigateUp
-
-}
-
 public class BookmarksManagerViewModel: ObservableObject {
 
     @Published var listViewModel = BookmarksListViewModel()
 
     public init() { }
 
-    func delete(_ item: SavedSiteItemWrapper) {
-        print("***", #function, item)
+    func delete(_ model: SavedSiteModel) {
+        print("***", #function, model)
     }
 
-    func toggleFavorite(_ item: SavedSiteItemWrapper) {
-        print("***", #function, item)
+    func toggleFavorite(_ model: SavedSiteModel) {
+        print("***", #function, model)
     }
 
 }

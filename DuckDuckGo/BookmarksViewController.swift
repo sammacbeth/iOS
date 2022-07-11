@@ -20,10 +20,31 @@
 import SwiftUI
 import DDGBookmarksUI
 
-class BookmarksViewController: UIHostingController<BookmarksManagerView> {
+class BookmarksViewController: UIHostingController<BookmarksViewController.BookmarksManagerWrapper> {
+
+    struct LocalFaviconProvider: FaviconProvider {
+
+        func image(forDomain domain: String) -> FaviconImageType? {
+            return UIImage(systemName: "globe")
+        }
+
+    }
+
+    struct BookmarksManagerWrapper: View {
+
+        let faviconProvider: FaviconProvider
+
+        var body: some View {
+            BookmarksManagerView()
+                .environmentObject(FaviconProviderModel(provider: faviconProvider))
+        }
+
+    }
 
     convenience init() {
-        self.init(rootView: BookmarksManagerView())
+        self.init(rootView: BookmarksManagerWrapper(
+            faviconProvider: LocalFaviconProvider()
+        ))
     }
 
 }

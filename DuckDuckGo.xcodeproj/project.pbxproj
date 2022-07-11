@@ -278,6 +278,8 @@
 		8590CB67268A2E520089F6BF /* RootDebugViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8590CB66268A2E520089F6BF /* RootDebugViewController.swift */; };
 		8590CB69268A4E190089F6BF /* DebugEtagStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8590CB68268A4E190089F6BF /* DebugEtagStorage.swift */; };
 		85923C401FD2F8D10097204B /* PrivacyProtectionTrackerNetworksTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85923C3F1FD2F8D10097204B /* PrivacyProtectionTrackerNetworksTests.swift */; };
+		8593DC8B287C3E73000E525A /* DDGBookmarks in Frameworks */ = {isa = PBXBuildFile; productRef = 8593DC8A287C3E73000E525A /* DDGBookmarks */; };
+		8593DC8D287C3E73000E525A /* DDGBookmarksUI in Frameworks */ = {isa = PBXBuildFile; productRef = 8593DC8C287C3E73000E525A /* DDGBookmarksUI */; };
 		8598F67B2405EB8D00FBC70C /* KeyboardSettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8598F6792405EB8600FBC70C /* KeyboardSettingsTests.swift */; };
 		859C5FB82147E6CE00E2A43D /* grade-cases.json in Resources */ = {isa = PBXBuildFile; fileRef = 859C5FB72147E6CE00E2A43D /* grade-cases.json */; };
 		859C5FBA2147E6E200E2A43D /* GradeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859C5FB92147E6E200E2A43D /* GradeTests.swift */; };
@@ -1068,6 +1070,7 @@
 		8590CB66268A2E520089F6BF /* RootDebugViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootDebugViewController.swift; sourceTree = "<group>"; };
 		8590CB68268A4E190089F6BF /* DebugEtagStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugEtagStorage.swift; sourceTree = "<group>"; };
 		85923C3F1FD2F8D10097204B /* PrivacyProtectionTrackerNetworksTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyProtectionTrackerNetworksTests.swift; sourceTree = "<group>"; };
+		8593DC89287C3E59000E525A /* DDGBookmarks */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = DDGBookmarks; sourceTree = "<group>"; };
 		8598F6792405EB8600FBC70C /* KeyboardSettingsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardSettingsTests.swift; sourceTree = "<group>"; };
 		859C5FB72147E6CE00E2A43D /* grade-cases.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "grade-cases.json"; path = "submodules/privacy-grade/test/data/grade-cases.json"; sourceTree = SOURCE_ROOT; };
 		859C5FB92147E6E200E2A43D /* GradeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradeTests.swift; sourceTree = "<group>"; };
@@ -2125,7 +2128,9 @@
 			files = (
 				853273B624FFE0BB00E3C778 /* WidgetKit.framework in Frameworks */,
 				F143C2EB1E4A4CD400CFDE3A /* Core.framework in Frameworks */,
+				8593DC8D287C3E73000E525A /* DDGBookmarksUI in Frameworks */,
 				31E69A63280F4CB600478327 /* DuckUI in Frameworks */,
+				8593DC8B287C3E73000E525A /* DDGBookmarks in Frameworks */,
 				4B5167422824B492004C67BA /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2426,6 +2431,7 @@
 		31E69A60280F4BAD00478327 /* LocalPackages */ = {
 			isa = PBXGroup;
 			children = (
+				8593DC89287C3E59000E525A /* DDGBookmarks */,
 				31794BFF2821DFB600F18633 /* DuckUI */,
 			);
 			path = LocalPackages;
@@ -4303,6 +4309,8 @@
 			packageProductDependencies = (
 				31E69A62280F4CB600478327 /* DuckUI */,
 				4B5167412824B492004C67BA /* Lottie */,
+				8593DC8A287C3E73000E525A /* DDGBookmarks */,
+				8593DC8C287C3E73000E525A /* DDGBookmarksUI */,
 			);
 			productName = DuckDuckGo;
 			productReference = 84E341921E2F7EFB00BDBA6F /* DuckDuckGo.app */;
@@ -7167,6 +7175,14 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4BE86C5B2633DBD7001C0E77 /* XCRemoteSwiftPackageReference "BrowserServicesKit" */;
 			productName = BrowserServicesKit;
+		};
+		8593DC8A287C3E73000E525A /* DDGBookmarks */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DDGBookmarks;
+		};
+		8593DC8C287C3E73000E525A /* DDGBookmarksUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DDGBookmarksUI;
 		};
 		C14882EC27F211A000D59F0C /* SwiftSoup */ = {
 			isa = XCSwiftPackageProductDependency;
