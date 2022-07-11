@@ -130,25 +130,28 @@ struct BookmarksListView: View {
 
             ToolbarItem(placement: .bottomBar) {
                 HStack {
-                    ZStack(alignment: .leading) {
+                    HStack {
                         Button("Add Folder") {
                             print("*** Add Folder")
                         }
-                    }.frame(maxWidth: .infinity)
 
-                    ZStack {
-                        // We want custom behaviours otherwise we could just use SwiftUI's EditButton
-                        Button("Edit") {
-                            print("*** Edit")
-                            editMode?.wrappedValue = .active
-                        }.visibility(editMode?.wrappedValue == .inactive ? .visible : .gone)
-                        Button("Done") {
-                            print("*** Done")
-                            editMode?.wrappedValue = .inactive
-                        }.visibility(editMode?.wrappedValue == .active ? .visible : .gone)
-                    }.frame(maxWidth: .infinity)
+                        Spacer()
+                    }
+                    .frame(maxWidth: .infinity)
 
-                    ZStack(alignment: .trailing) {
+                    HStack {
+                        Spacer()
+
+                        EditButton()
+
+                        Spacer()
+                            .visibility(isEditing ? .gone : .visible)
+                    }
+                    .frame(maxWidth: .infinity)
+
+                    HStack {
+                        Spacer()
+
                         Menu {
                             Button {
                                 print("*** Import")
@@ -163,7 +166,9 @@ struct BookmarksListView: View {
                         } label: {
                             Text("More")
                         }.visibility(model.canImportExport ? .visible : .invisible)
-                    }.frame(maxWidth: .infinity)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .visibility(isEditing ? .gone : .visible)
                 }
             } // ToolbarItem
         }
