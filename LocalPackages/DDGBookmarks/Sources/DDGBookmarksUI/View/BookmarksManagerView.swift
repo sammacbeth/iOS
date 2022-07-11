@@ -29,8 +29,7 @@ public struct BookmarksManagerView: View {
         case allBookmarks, favorites
     }
 
-    public init() {
-    }
+    public init() { }
 
     @State private var selectedViewIndex = Segments.allBookmarks
 
@@ -56,7 +55,10 @@ public struct BookmarksManagerView: View {
                 Group {
                     switch selectedViewIndex {
                     case .allBookmarks:
-                        BookmarksListView(model: model.listViewModel, onDelete: model.delete, onToggleFavorite: model.toggleFavorite)
+                        BookmarksListView(model: model.listViewModel,
+                                          title: "Bookmarks",
+                                          onDelete: model.delete,
+                                          onToggleFavorite: model.toggleFavorite)
 
                     case .favorites:
                         FavoritesView()

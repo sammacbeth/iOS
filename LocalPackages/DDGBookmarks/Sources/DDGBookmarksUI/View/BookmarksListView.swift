@@ -60,7 +60,7 @@ struct BookmarksListView: View {
     }
 
     @ObservedObject var model: BookmarksListViewModel
-
+    let title: String
     var onDelete: (SavedSiteModel) -> Void
     var onToggleFavorite: (SavedSiteModel) -> Void
 
@@ -126,6 +126,9 @@ struct BookmarksListView: View {
         .sheet(isPresented: $model.showingEditor) {
             Text("Editor for \(model.editingItem?.id ?? "<nil>")")
         }
+        .navigationTitle(title)
+        .navigationBarHidden(false)
+        .navigationBarTitleDisplayMode(.inline)
         .toolbar {
 
             ToolbarItem(placement: .bottomBar) {
@@ -218,6 +221,7 @@ struct FolderCellView: View {
         } else {
             NavigationLink {
                 BookmarksListView(model: listModel,
+                                  title: folder.name,
                                   onDelete: onDelete,
                                   onToggleFavorite: onToggleFavorite)
                 .onAppear {
