@@ -454,20 +454,17 @@ class MainViewController: UIViewController {
         }
     }
 
-    @available(iOS 13.4, *)
     func handlePressEvent(event: UIPressesEvent?) {
         keyModifierFlags = event?.modifierFlags
     }
 
     override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
         super.pressesBegan(presses, with: event)
-        guard #available(iOS 13.4, *) else { return }
         handlePressEvent(event: event)
     }
     
     override func pressesEnded(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
         super.pressesEnded(presses, with: event)
-        guard #available(iOS 13.4, *) else { return }
         handlePressEvent(event: event)
     }
 
@@ -824,7 +821,6 @@ class MainViewController: UIViewController {
         performSegue(withIdentifier: "Downloads", sender: self)
     }
     
-    @available(iOS 14.0, *)
     fileprivate func launchAutofillLogins() {
         let appSettings = AppDependencyProvider.shared.appSettings
         let autofillSettingsViewController = AutofillLoginSettingsListViewController(appSettings: appSettings)
@@ -1440,11 +1436,9 @@ extension MainViewController: TabDelegate {
     }
     
     func tabDidRequestAutofillLogins(tab: TabViewController) {
-        if #available(iOS 14.0, *) {
-            launchAutofillLogins()
-        }
+        launchAutofillLogins()
     }
-
+    
     func tabDidRequestSettings(tab: TabViewController) {
         launchSettings()
     }
@@ -1871,7 +1865,6 @@ extension MainViewController {
 }
 
 // MARK: - AutofillLoginSettingsListViewControllerDelegate
-@available(iOS 14.0, *)
 extension MainViewController: AutofillLoginSettingsListViewControllerDelegate {
     func autofillLoginSettingsListViewControllerDidFinish(_ controller: AutofillLoginSettingsListViewController) {
         controller.dismiss(animated: true)
