@@ -39,7 +39,7 @@ struct BookmarksListView: View {
                         }.visibility(isFavorite ? .visible : .gone)
 
                         Label {
-                            Text("Remove")
+                            Text("Remove Favorite")
                         } icon: {
                             Image("RemoveFavoriteAction", bundle: Bundle.module)
                         }.visibility(isFavorite ? .gone : .visible)
@@ -61,8 +61,11 @@ struct BookmarksListView: View {
                     Button(role: .destructive) {
                         action()
                     } label: {
-                        Image("DeleteAction", bundle: Bundle.module)
-                        Text("Delete")
+                        Label {
+                            Text("Delete")
+                        } icon: {
+                            Image("DeleteAction", bundle: Bundle.module)
+                        }
                     }
                 }
             }
