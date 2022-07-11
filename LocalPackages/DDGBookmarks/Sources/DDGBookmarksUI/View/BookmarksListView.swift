@@ -22,6 +22,8 @@ struct BookmarksListView: View {
 
     struct SwipeToFavoriteModifier: ViewModifier {
 
+        let isFavorite: Bool
+
         var action: () -> Void
 
         func body(content: Content) -> some View {
@@ -30,12 +32,19 @@ struct BookmarksListView: View {
                     Button {
                         action()
                     } label: {
-                        HStack {
-                            Image("Star-16", bundle: Bundle.module)
-                                .foregroundColor(Color.black)
-                            Text("Add Favorite")
-                        }
-                    }.tint(.yellow)
+                        Label {
+                            Text("Favorite")
+                        } icon: {
+                            Image("FavoriteAction", bundle: Bundle.module)
+                        }.visibility(isFavorite ? .visible : .gone)
+
+                        Label {
+                            Text("Remove")
+                        } icon: {
+                            Image("RemoveFavoriteAction", bundle: Bundle.module)
+                        }.visibility(isFavorite ? .gone : .visible)
+                    }
+                    .tint(.favoriteAction)
                 }
             }
         }
@@ -52,6 +61,7 @@ struct BookmarksListView: View {
                     Button(role: .destructive) {
                         action()
                     } label: {
+                        Image("DeleteAction", bundle: Bundle.module)
                         Text("Delete")
                     }
                 }
@@ -89,7 +99,7 @@ struct BookmarksListView: View {
                         } edit: {
                             model.edit(item)
                         }
-                        .modifier(SwipeToFavoriteModifier(action: {
+                        .modifier(SwipeToFavoriteModifier(isFavorite: bookmark.isFavorite, action: {
                             print("*** swipe to favorite")
                         }))
                         .modifier(SwipeToDeleteModifier(action: {
@@ -112,7 +122,7 @@ struct BookmarksListView: View {
                     }
 
                 }
-                .foregroundColor(Color.listTextColor)
+                .foregroundColor(.listText)
 
             }
             .onDelete { indexes in
@@ -124,7 +134,7 @@ struct BookmarksListView: View {
 
         }
         .sheet(isPresented: $model.showingEditor) {
-            Text("Editor for \(model.editingItem?.id ?? "<nil>")")
+            Text("Editor for \(model.editingItem?.id.uuidString ?? "<nil>")")
         }
         .navigationTitle(title)
         .navigationBarHidden(false)
@@ -195,6 +205,8 @@ struct BookmarksListView: View {
 
 struct FolderCellView: View {
 
+    @EnvironmentObject var model: BookmarksManagerViewModel
+
     let folder: SavedSiteModel.Folder
     let isEditing: Bool
     let onDelete: (SavedSiteModel) -> Void
@@ -211,7 +223,7 @@ struct FolderCellView: View {
             Image(systemName: "folder") // TODO use correct image
             Text(folder.name)
             Spacer()
-            Text("\(folder.children.count)") // TODO apply style
+            Text("\(folder.childrenCount)") // TODO apply style
         }
 
         if isEditing {
@@ -225,7 +237,7 @@ struct FolderCellView: View {
                                   onDelete: onDelete,
                                   onToggleFavorite: onToggleFavorite)
                 .onAppear {
-                    listModel.items = folder.children // TODO load from model
+                    listModel.items = model.childrenForFolderWithUUID(folder.id) ?? []
                 }
             } label: {
                 cell

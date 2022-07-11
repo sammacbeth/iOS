@@ -20,24 +20,23 @@ import Foundation
 
 public class BookmarksManagerViewModel: ObservableObject {
 
-    @Published var listViewModel = BookmarksListViewModel(items: [
+    struct Folders {
 
-        .bookmark(title: "Twitter", url: "https://www.twitter.com"),
-        .folder(name: "TV", children: [
-            .bookmark(title: "Netflix", url: "https://netflix.com"),
-            .bookmark(title: "Amazon Prime", url: "https://prime.amazon.com"),
-            .folder(name: "IMDB", children: [
-                .bookmark(title: "Stranger Things", url: "https://www.imdb.com/title/tt4574334/?ref_=fn_al_tt_1"),
-                .bookmark(title: "For All Mankind", url: "https://www.imdb.com/title/tt7772588/?ref_=fn_al_tt_1")
-            ])
-        ]),
-        .folder(name: "Music", children: [
-            .bookmark(title: "Apple Music", url: "https://music.apple.com"),
-            .bookmark(title: "Spotify", url: "https://spotify.com")
-        ])
-    ])
+        static let tv = UUID()
+        static let imdb = UUID()
+        static let music = UUID()
 
-    public init() { }
+    }
+
+    @Published var listViewModel = BookmarksListViewModel(items: [])
+
+    public init() {
+        listViewModel.items = [
+            .bookmark(title: "Twitter", url: "https://www.twitter.com"),
+            .folder(id: Folders.tv, name: "TV", childrenCount: 3),
+            .folder(id: Folders.music, name: "🎼 Music 🎶", childrenCount: 2)
+        ]
+    }
 
     func delete(_ model: SavedSiteModel) {
         print("***", #function, model)
@@ -45,6 +44,35 @@ public class BookmarksManagerViewModel: ObservableObject {
 
     func toggleFavorite(_ model: SavedSiteModel) {
         print("***", #function, model)
+    }
+
+    func childrenForFolderWithUUID(_ id: UUID) -> [SavedSiteModel]? {
+
+        switch id {
+        case Folders.tv:
+            return [
+                .bookmark(title: "Netflix", url: "https://netflix.com"),
+                .bookmark(title: "Amazon Prime", url: "https://prime.amazon.com"),
+                .bookmark(title: "Disney+", url: "https://disneyplus.com"),
+                .folder(id: Folders.imdb, name: "IMDB", childrenCount: 2)
+            ]
+
+        case Folders.imdb:
+            return [
+                .bookmark(title: "Stranger Things", url: "https://www.imdb.com/title/tt4574334/?ref_=fn_al_tt_1"),
+                .bookmark(title: "For All Mankind", url: "https://www.imdb.com/title/tt7772588/?ref_=fn_al_tt_1")
+            ]
+
+        case Folders.music:
+            return [
+                .bookmark(title: "Apple Music", url: "https://music.apple.com"),
+                .bookmark(title: "Spotify", url: "https://spotify.com")
+            ]
+
+        default:
+            return nil
+        }
+
     }
 
 }

@@ -37,6 +37,7 @@ class BookmarksViewController: UIHostingController<BookmarksViewController.Bookm
         var body: some View {
             BookmarksManagerView()
                 .environmentObject(FaviconProviderModel(provider: faviconProvider))
+                .environmentObject(BookmarksManagerViewModel())
         }
 
     }

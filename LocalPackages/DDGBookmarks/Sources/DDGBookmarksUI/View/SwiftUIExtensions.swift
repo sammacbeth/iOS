@@ -79,6 +79,7 @@ extension View {
 
 extension Color {
 
-    static let listTextColor = Color("ListTextColor", bundle: Bundle.module)
+    static let listText = Color("ListTextColor", bundle: Bundle.module)
+    static let favoriteAction = Color("FavoriteActionColor", bundle: Bundle.module)
 
 }

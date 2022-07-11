@@ -22,7 +22,7 @@ class SavedSiteModel: Identifiable {
 
     class Bookmark {
 
-        let id: String
+        let id: UUID
         var title: String
         var url: String
         var isFavorite: Bool
@@ -31,7 +31,7 @@ class SavedSiteModel: Identifiable {
             URL(string: url)?.host ?? ""
         }
 
-        init(id: String, title: String, url: String, isFavorite: Bool) {
+        init(id: UUID, title: String, url: String, isFavorite: Bool) {
             self.id = id
             self.title = title
             self.url = url
@@ -42,19 +42,19 @@ class SavedSiteModel: Identifiable {
 
     class Folder {
 
-        let id: String
+        let id: UUID
         var name: String
-        var children: [SavedSiteModel]
+        var childrenCount: Int
 
-        init(id: String, name: String, children: [SavedSiteModel]) {
+        init(id: UUID, name: String, childrenCount: Int) {
             self.id = id
             self.name = name
-            self.children = children
+            self.childrenCount = childrenCount
         }
 
     }
 
-    let id: String
+    let id: UUID
     let bookmark: Bookmark?
     let folder: Folder?
 
@@ -62,7 +62,7 @@ class SavedSiteModel: Identifiable {
         bookmark?.title ?? folder?.name ?? ""
     }
 
-    init(id: String, bookmark: Bookmark? = nil, folder: Folder? = nil) {
+    init(id: UUID, bookmark: Bookmark? = nil, folder: Folder? = nil) {
         self.id = id
         self.bookmark = bookmark
         self.folder = folder
@@ -72,14 +72,12 @@ class SavedSiteModel: Identifiable {
 
 extension SavedSiteModel {
 
-    static func bookmark(title: String, url: String, isFavorite: Bool = false) -> SavedSiteModel {
-        let id = UUID().uuidString
+    static func bookmark(id: UUID = UUID(), title: String, url: String, isFavorite: Bool = false) -> SavedSiteModel {
         return .init(id: id, bookmark: .init(id: id, title: title, url: url, isFavorite: isFavorite))
     }
 
-    static func folder(name: String, children: [SavedSiteModel]) -> SavedSiteModel {
-        let id = UUID().uuidString
-        return .init(id: id, folder: .init(id: id, name: name, children: children))
+    static func folder(id: UUID = UUID(), name: String, childrenCount: Int) -> SavedSiteModel {
+        return .init(id: id, folder: .init(id: id, name: name, childrenCount: childrenCount))
     }
 
 }

@@ -23,7 +23,7 @@ public struct BookmarksManagerView: View {
 
     @Environment(\.presentationMode) var presentationMode
 
-    var model = BookmarksManagerViewModel()
+    @EnvironmentObject var model: BookmarksManagerViewModel
 
     enum Segments: Int {
         case allBookmarks, favorites
