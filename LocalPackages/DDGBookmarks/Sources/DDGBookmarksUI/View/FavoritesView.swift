@@ -179,9 +179,11 @@ struct GridItemView: View {
                 Button {
                     onDelete()
                 } label: {
-                    Circle()
-                        .foregroundColor(.gray40)
-                        .frame(width: 24, height: 24)
+                    Image("RemoveFavoriteManageAction", bundle: .module)
+                        .foregroundColor(.black)
+                        .background(Circle()
+                            .foregroundColor(.gray40)
+                            .frame(width: 24, height: 24))
                         .offset(x: 8, y: -8)
                 }
                 .visibility(isDragging || !isEditing ? .gone : .visible)
