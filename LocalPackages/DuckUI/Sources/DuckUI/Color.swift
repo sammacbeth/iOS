@@ -17,9 +17,13 @@
 //  limitations under the License.
 //
 
-#if !os(macOS)
-
 import SwiftUI
+
+#if os(iOS)
+public typealias PlatformColor = UIColor
+#elseif os(macOS)
+public typealias PlatformColor = NSColor
+#endif
 
 public extension Color {
     static let red100 = Color.init(0x330B01)
@@ -68,49 +72,49 @@ public extension Color {
     static let deprecatedBlue =  Color.init(0x678FFF)
 }
 
-public extension UIColor {
-    static let red100 = UIColor(.red100)
-    static let red90 = UIColor(.red90)
-    static let red80 = UIColor(.red80)
-    static let red70 = UIColor(.red70)
-    static let red60 = UIColor(.red60)
-    static let redBase = UIColor(.redBase)
-    static let red40 = UIColor(.red40)
-    static let red30 = UIColor(.red30)
-    static let red20 = UIColor(.red20)
-    static let red10 = UIColor(.red10)
-    static let red0 = UIColor(.red0)
+public extension PlatformColor {
+    static let red100 = PlatformColor(.red100)
+    static let red90 = PlatformColor(.red90)
+    static let red80 = PlatformColor(.red80)
+    static let red70 = PlatformColor(.red70)
+    static let red60 = PlatformColor(.red60)
+    static let redBase = PlatformColor(.redBase)
+    static let red40 = PlatformColor(.red40)
+    static let red30 = PlatformColor(.red30)
+    static let red20 = PlatformColor(.red20)
+    static let red10 = PlatformColor(.red10)
+    static let red0 = PlatformColor(.red0)
     
-    static let blue100 = UIColor(.blue100)
-    static let blue90 = UIColor(.blue90)
-    static let blue80 = UIColor(.blue80)
-    static let blue70 = UIColor(.blue70)
-    static let blue60 = UIColor(.blue60)
-    static let blueBase = UIColor(.blueBase)
-    static let blue40 = UIColor(.blue40)
-    static let blue30 = UIColor(.blue30)
-    static let blue20 = UIColor(.blue20)
-    static let blue10 = UIColor(.blue10)
-    static let blue0 = UIColor(.blue0)
+    static let blue100 = PlatformColor(.blue100)
+    static let blue90 = PlatformColor(.blue90)
+    static let blue80 = PlatformColor(.blue80)
+    static let blue70 = PlatformColor(.blue70)
+    static let blue60 = PlatformColor(.blue60)
+    static let blueBase = PlatformColor(.blueBase)
+    static let blue40 = PlatformColor(.blue40)
+    static let blue30 = PlatformColor(.blue30)
+    static let blue20 = PlatformColor(.blue20)
+    static let blue10 = PlatformColor(.blue10)
+    static let blue0 = PlatformColor(.blue0)
     
-    static let black = UIColor(.black)
-    static let gray95 = UIColor(.gray95)
-    static let gray90 = UIColor(.gray90)
-    static let gray85 = UIColor(.gray85)
-    static let gray80 = UIColor(.gray80)
-    static let gray70 = UIColor(.gray70)
-    static let gray60 = UIColor(.gray60)
-    static let gray55 = UIColor(.gray55)
-    static let gray50 = UIColor(.gray50)
-    static let gray40 = UIColor(.gray40)
-    static let gray30 = UIColor(.gray30)
-    static let gray25 = UIColor(.gray25)
-    static let gray20 = UIColor(.gray20)
-    static let gray10 = UIColor(.gray10)
-    static let gray0 =  UIColor(.gray0)
-    static let white =  UIColor(.white)
+    static let black = PlatformColor(.black)
+    static let gray95 = PlatformColor(.gray95)
+    static let gray90 = PlatformColor(.gray90)
+    static let gray85 = PlatformColor(.gray85)
+    static let gray80 = PlatformColor(.gray80)
+    static let gray70 = PlatformColor(.gray70)
+    static let gray60 = PlatformColor(.gray60)
+    static let gray55 = PlatformColor(.gray55)
+    static let gray50 = PlatformColor(.gray50)
+    static let gray40 = PlatformColor(.gray40)
+    static let gray30 = PlatformColor(.gray30)
+    static let gray25 = PlatformColor(.gray25)
+    static let gray20 = PlatformColor(.gray20)
+    static let gray10 = PlatformColor(.gray10)
+    static let gray0 =  PlatformColor(.gray0)
+    static let white =  PlatformColor(.white)
 
-    static let deprecatedBlue =  UIColor(.deprecatedBlue)
+    static let deprecatedBlue =  PlatformColor(.deprecatedBlue)
 }
 
 private extension Color {
@@ -124,5 +128,3 @@ private extension Color {
         )
     }
 }
-
-#endif

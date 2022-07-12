@@ -39,7 +39,12 @@ public class FaviconProviderModel: ObservableObject {
     }
 
     func image(forDomain domain: String) -> FaviconImageType {
-        return provider.image(forDomain: domain) ?? FaviconImageType(systemName: "globe")!
+#if os(iOS)
+        let fallback = FaviconImageType(systemName: "globe")
+#elseif os(macOS)
+        let fallback = NSImage(systemSymbolName: "globe", accessibilityDescription: nil)
+#endif
+        return provider.image(forDomain: domain) ?? fallback!
     }
 
 }

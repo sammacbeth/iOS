@@ -27,7 +27,7 @@ struct BookmarksListView: View {
         var action: () -> Void
 
         func body(content: Content) -> some View {
-            if #available(iOS 15, *) {
+            if #available(iOS 15, macOS 12, *) {
                 content.swipeActions(edge: .leading, allowsFullSwipe: false) {
                     Button {
                         action()
@@ -56,7 +56,7 @@ struct BookmarksListView: View {
         var action: () -> Void
 
         func body(content: Content) -> some View {
-            if #available(iOS 15, *) {
+            if #available(iOS 15, macOS 12, *) {
                 content.swipeActions(edge: .trailing, allowsFullSwipe: false) {
                     Button(role: .destructive) {
                         action()
@@ -78,17 +78,23 @@ struct BookmarksListView: View {
     var onToggleFavorite: (SavedSiteModel) -> Void
 
     @Environment(\.presentationMode) private var presentationMode
-    @Environment(\.editMode) private var editMode
 
+    #if os(iOS)
+    @Environment(\.editMode) private var editMode
     var isEditing: Bool {
         if case .active = editMode?.wrappedValue {
             return true
         }
         return false
     }
+    #elseif os(macOS)
+    var isEditing = false
+    #endif
 
     func editItem(_ item: SavedSiteModel) {
+        #if os(iOS)
         editMode?.wrappedValue = .inactive
+        #endif
         model.edit(item)
     }
 
@@ -145,11 +151,19 @@ struct BookmarksListView: View {
             Text("Editor for \(model.editingItem?.id.uuidString ?? "<nil>")")
         }
         .navigationTitle(title)
+        #if os(iOS)
         .navigationBarHidden(false)
         .navigationBarTitleDisplayMode(.inline)
+        #endif
         .toolbar {
 
-            ToolbarItem(placement: .bottomBar) {
+            #if os(iOS)
+            let placement: ToolbarItemPlacement = .bottomBar
+            #elseif os(macOS)
+            let placement: ToolbarItemPlacement = .automatic
+            #endif
+
+            ToolbarItem(placement: placement) {
                 HStack {
                     HStack {
                         Button("Add Folder") {
@@ -160,6 +174,7 @@ struct BookmarksListView: View {
                     }
                     .frame(maxWidth: .infinity)
 
+                    #if os(iOS)
                     // SwiftUI EditButton uses an animation which makes the UI go screwy
                     HStack {
                         Spacer()
@@ -178,6 +193,7 @@ struct BookmarksListView: View {
                             .visibility(isEditing ? .gone : .visible)
                     }
                     .frame(maxWidth: .infinity)
+                    #endif
 
                     HStack {
                         Spacer()

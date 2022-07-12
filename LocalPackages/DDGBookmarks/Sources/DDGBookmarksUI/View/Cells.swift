@@ -57,7 +57,9 @@ struct FolderCellView: View {
             } label: {
                 cell
             }
+            #if os(iOS)
             .isDetailLink(false)
+            #endif
         }
 
     }

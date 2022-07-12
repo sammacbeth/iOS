@@ -24,7 +24,7 @@ public struct PrimaryButtonStyle: ButtonStyle {
     
     public func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .font(Font(UIFont.boldAppFont(ofSize: Consts.fontSize)))
+            .font(Font(PlatformFont.boldAppFont(ofSize: Consts.fontSize)))
             .foregroundColor(configuration.isPressed ? .white.opacity(Consts.pressedOpacity) : .white.opacity(1))
             .padding()
             .frame(minWidth: 0, maxWidth: .infinity, maxHeight: Consts.height)
@@ -47,7 +47,7 @@ public struct SecondaryButtonStyle: ButtonStyle {
     
     public func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .font(Font(UIFont.boldAppFont(ofSize: Consts.fontSize)))
+            .font(Font(PlatformFont.boldAppFont(ofSize: Consts.fontSize)))
             .foregroundColor(configuration.isPressed ? foregroundColor.opacity(Consts.pressedOpacity) : foregroundColor.opacity(1))
             .padding()
             .frame(minWidth: 0, maxWidth: .infinity, maxHeight: Consts.height)
@@ -66,7 +66,7 @@ public struct GhostButtonStyle: ButtonStyle {
     
     public func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .font(Font(UIFont.boldAppFont(ofSize: Consts.fontSize)))
+            .font(Font(PlatformFont.boldAppFont(ofSize: Consts.fontSize)))
             .foregroundColor(configuration.isPressed ? foregroundColor.opacity(Consts.pressedOpacity) : foregroundColor.opacity(1))
             .padding()
             .frame(minWidth: 0, maxWidth: .infinity, maxHeight: Consts.height)

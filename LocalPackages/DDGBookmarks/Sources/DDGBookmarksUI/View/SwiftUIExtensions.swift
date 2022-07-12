@@ -82,4 +82,10 @@ extension Color {
     static let listText = Color("ListTextColor", bundle: Bundle.module)
     static let favoriteAction = Color("FavoriteActionColor", bundle: Bundle.module)
 
+    #if os(macOS)
+    static let listBackground = Color.gray50
+    #elseif os(iOS)
+    static let listBackground = Color(UIColor.systemGroupedBackground)
+    #endif
+    
 }

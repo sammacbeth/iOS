@@ -17,7 +17,10 @@
 //  limitations under the License.
 //
 
+#if os(iOS)
 import UIKit
+
+public typealias PlatformFont = UIFont
 
 extension UIFont {
 
@@ -48,3 +51,30 @@ extension UIFont {
                UIFont.boldSystemFont(ofSize: size)
     }
 }
+
+#elseif os(macOS)
+
+import AppKit
+
+public typealias PlatformFont = NSFont
+
+extension NSFont {
+
+    public static func appFont(ofSize size: CGFloat) -> NSFont {
+        return NSFont.systemFont(ofSize: size)
+    }
+
+    public static func lightAppFont(ofSize size: CGFloat) -> NSFont {
+        return NSFont.systemFont(ofSize: size, weight: NSFont.Weight.light)
+    }
+
+    public static func semiBoldAppFont(ofSize size: CGFloat) -> NSFont {
+        return NSFont.systemFont(ofSize: size, weight: NSFont.Weight.semibold)
+    }
+
+    public static func boldAppFont(ofSize size: CGFloat) -> NSFont {
+        return NSFont.boldSystemFont(ofSize: size)
+    }
+}
+
+#endif

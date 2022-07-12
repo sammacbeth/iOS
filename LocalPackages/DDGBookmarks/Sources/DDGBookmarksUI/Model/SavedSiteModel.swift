@@ -18,7 +18,11 @@
 
 import Foundation
 
-class SavedSiteModel: Identifiable {
+class SavedSiteModel: Identifiable, Equatable {
+
+    static func == (lhs: SavedSiteModel, rhs: SavedSiteModel) -> Bool {
+        return lhs.id == rhs.id
+    }
 
     class Bookmark {
 

@@ -33,13 +33,17 @@ public struct BookmarksManagerView: View {
 
     @State private var selectedViewIndex = Segments.allBookmarks
 
+    #if os(iOS)
     @Environment(\.editMode) private var editMode
     var isEditing: Bool {
-        if case .inactive = editMode?.wrappedValue {
-            return false
+        if case .active = editMode?.wrappedValue {
+            return true
         }
-        return true
+        return false
     }
+    #elseif os(macOS)
+    var isEditing = false
+    #endif
 
     public var body: some View {
         NavigationView {
@@ -66,9 +70,11 @@ public struct BookmarksManagerView: View {
                 }
                 .padding(.top, 19)
                 .navigationTitle("Bookmarks")
+                #if os(iOS)
                 .navigationBarHidden(false)
                 .navigationBarTitleDisplayMode(.inline)
-
+                #endif
+                
                 Spacer()
 
             }
@@ -82,7 +88,9 @@ public struct BookmarksManagerView: View {
             }
 
         }
+        #if os(iOS)
         .navigationViewStyle(.stack)
+        #endif
 
     }
 

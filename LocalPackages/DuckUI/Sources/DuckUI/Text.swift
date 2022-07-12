@@ -25,7 +25,7 @@ public struct Label3AltStyle: ViewModifier {
     
     public func body(content: Content) -> some View {
         content
-            .font(Font(uiFont: UIFont.semiBoldAppFont(ofSize: 16)))
+            .font(Font(font: PlatformFont.semiBoldAppFont(ofSize: 16)))
             .foregroundColor(colorScheme == .light ? .black : .white)
     }
 }
@@ -51,7 +51,7 @@ public struct Label4Style: ViewModifier {
     
     public func body(content: Content) -> some View {
         content
-            .font(Font(uiFont: UIFont.appFont(ofSize: 16)))
+            .font(Font(font: PlatformFont.appFont(ofSize: 16)))
             .foregroundColor(colorScheme == .light ? .gray50 : .gray20)
     }
 }
@@ -85,7 +85,7 @@ public extension View {
 }
 
 extension Font {
-    init(uiFont: UIFont) {
-        self = Font(uiFont as CTFont)
+    init(font: PlatformFont) {
+        self = Font(font as CTFont)
     }
 }

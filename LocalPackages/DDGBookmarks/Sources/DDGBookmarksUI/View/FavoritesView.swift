@@ -21,30 +21,27 @@ import UniformTypeIdentifiers
 
 // https://stackoverflow.com/questions/62606907/swiftui-using-ondrag-and-ondrop-to-reorder-items-within-one-single-lazygrid
 
-struct GridData: Identifiable, Equatable {
-    let id: Int
-}
-
 // MARK: - Model
 
 class Model: ObservableObject {
 
-    static let size = 72.0 + 8.0
+    static let size = 64.0 + 16.0
 
-    @Published var data: [GridData]
+    @Published var data: [SavedSiteModel]
 
     init() {
-        data = Array(repeating: GridData(id: 0), count: 100)
-        for i in 0..<data.count {
-            data[i] = GridData(id: i)
+        var data = [SavedSiteModel]()
+        for i in 0 ..< 20 {
+            data.append(.bookmark(title: "Example \(i)", url: "https://www.twitter.com"))
         }
+        self.data = data
     }
 
     func columnsForWidth(_ width: CGFloat) -> [GridItem] {
         return Array(repeating: GridItem(.fixed(Self.size)), count: Int(width / Self.size))
     }
 
-    func delete(_ id: Int) {
+    func delete(_ id: UUID) {
         data = data.filter {
             $0.id != id
         }
@@ -58,17 +55,17 @@ struct FavoritesView: View {
 
     struct OnDragModifier: ViewModifier {
 
-        let d: GridData
+        let d: SavedSiteModel
 
-        @Binding var dragging: GridData?
+        @Binding var dragging: SavedSiteModel?
 
         func body(content: Content) -> some View {
 
-            if #available(iOS 15, *) {
+            if #available(iOS 15, macOS 12, *) {
 
                 content.onDrag {
                     self.dragging = d
-                    return NSItemProvider(object: String(d.id) as NSString)
+                    return NSItemProvider(object: d.id.uuidString as NSString)
                 } preview: {
                     GridItemView(d: d, isDragging: true, isEditing: false) { }
                 }
@@ -77,7 +74,7 @@ struct FavoritesView: View {
 
                 content.onDrag {
                     self.dragging = d
-                    return NSItemProvider(object: String(d.id) as NSString)
+                    return NSItemProvider(object: d.id.uuidString as NSString)
                 }
 
             }
@@ -87,7 +84,7 @@ struct FavoritesView: View {
 
     @StateObject private var model = Model()
 
-    @State private var dragging: GridData?
+    @State private var dragging: SavedSiteModel?
     @State private var isEditing = false
 
     var body: some View {
@@ -106,9 +103,16 @@ struct FavoritesView: View {
                 .animation(.default, value: model.data)
                 .padding(.top)
             }
-            .background(Color(UIColor.systemGroupedBackground))
+            .background(Color.listBackground)
             .toolbar {
-                ToolbarItem(placement: .bottomBar) {
+
+#if os(iOS)
+let placement: ToolbarItemPlacement = .bottomBar
+#elseif os(macOS)
+let placement: ToolbarItemPlacement = .automatic
+#endif
+
+                ToolbarItem(placement: placement) {
                     HStack {
                         Spacer()
 
@@ -133,9 +137,9 @@ struct FavoritesView: View {
 }
 
 struct DragRelocateDelegate: DropDelegate {
-    let item: GridData
-    @Binding var listData: [GridData]
-    @Binding var current: GridData?
+    let item: SavedSiteModel
+    @Binding var listData: [SavedSiteModel]
+    @Binding var current: SavedSiteModel?
 
     func dropEntered(info: DropInfo) {
         if item != current {
@@ -162,7 +166,7 @@ struct DragRelocateDelegate: DropDelegate {
 
 struct GridItemView: View {
 
-    let d: GridData
+    let d: SavedSiteModel
     let isDragging: Bool
     let isEditing: Bool
     let onDelete: () -> Void
@@ -190,13 +194,13 @@ struct GridItemView: View {
 
             }
 
-            Text(String(d.id))
+            Text(d.label)
                 .font(.caption)
                 .visibility(isDragging ? .gone : .visible)
 
         }
         .background(Color.clear)
-        .frame(width: isDragging ? 64 : 72,
+        .frame(width: isDragging ? 64 : 80,
                height: isDragging ? 64 : 102)
 
     }
