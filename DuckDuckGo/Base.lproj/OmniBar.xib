@@ -247,7 +247,8 @@
                                     <rect key="frame" x="373" y="8" width="30" height="24"/>
                                     <accessibility key="accessibilityConfiguration" label="Voice Search"/>
                                     <constraints>
-                                        <constraint firstAttribute="width" priority="900" constant="30" id="80Y-p8-kj7"/>
+                                        <constraint firstAttribute="width" priority="900" constant="40" id="80Y-p8-kj7"/>
+                                        <constraint firstAttribute="height" constant="40" id="HBn-w2-Tbm"/>
                                     </constraints>
                                     <state key="normal" image="MicrophoneSolid"/>
                                     <connections>
