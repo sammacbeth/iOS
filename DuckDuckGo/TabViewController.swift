@@ -1026,7 +1026,7 @@ extension TabViewController: WKNavigationDelegate {
         NetworkLeaderboard.shared.incrementPagesLoaded()
         
         appRatingPrompt.registerUsage()
-        
+     
         if let scene = self.view.window?.windowScene, appRatingPrompt.shouldPrompt() {
             SKStoreReviewController.requestReview(in: scene)
             appRatingPrompt.shown()

@@ -695,7 +695,7 @@ class MainViewController: UIViewController {
 
         omniBar.refreshText(forUrl: tab.url)
 
-        if let siteRating = tab.siteRating {
+        if let siteRating = tab.siteRating, siteRating.url.host == tab.url?.host {
             omniBar.updatePrivacyIcon(for: siteRating)
         } else {
             omniBar.resetPrivacyIcon(for: tab.url)
